@@ -48,6 +48,12 @@ bool	init_philosophers(t_env *env)
 	return (true);
 }
 
+void	print_test(t_env *env)
+{
+	while (env->)
+	printf("", );
+}
+
 int	main(int ac, char **av)
 {
 	if (ac < 5 || ac > 6)
@@ -59,6 +65,6 @@ int	main(int ac, char **av)
 	env = init_env(av);
 	if (!init_philosophers(&env))
 		return (1);
-
+	print_test(&env);
 	return (0);
 }
