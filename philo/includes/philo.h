@@ -21,17 +21,7 @@
 #include <stdbool.h>
 #include "error.h"
 
-//Colors
-#define	RED	"\e[31m"
-#define	GREEN  "\e[32m"
-#define	YELLOW "\e[33m"
-#define	RESET  "\e[0m"
-
-//Error
-#define	ERR_ARG 1001
-
-//STRUCT
-
+//STRUCTS
 typedef struct s_fork 
 {
 	int				id;
@@ -68,7 +58,6 @@ typedef struct s_env
 }	t_env;
 
 // FUNCTIONS
-
 //display.c
 void	*print_test(void *philo);
 void	*print_test_first_philo(void *philo);

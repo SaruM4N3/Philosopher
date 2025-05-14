@@ -13,7 +13,15 @@
 #ifndef ERROR_H
 # define ERROR_H
 
-//Macro
+//Colors
+#define	RED	"\e[31m"
+#define	GREEN  "\e[32m"
+#define	YELLOW "\e[33m"
+#define	RESET  "\e[0m"
+
+//Error
+#define	ERR_ARG 1001
+//Messages
 #define ERR_MESSAGE "ERROR :\t"
 #define ARG_MESSAGE "%sWrong nbr of arguments...\n\n\
 %sPls procced as follow:\n%s./philosopher \

@@ -13,7 +13,7 @@
 #include <limits.h>
 #include <stddef.h>
 
-static void	ft_space_and_sign_increment(const char *str, size_t *i, int *sign)
+static void	ft_check_sign(const char *str, size_t *i, int *sign)
 {
 	*i = 0;
 	while (str[*i] && ((str[*i] == ' ') || (str[*i] >= 9 && str[*i] <= 13)))
@@ -34,7 +34,7 @@ int	ft_atoi(const char *str)
 	int		sign;
 
 	num = 0;
-	ft_space_and_sign_increment(str, &i, &sign);
+	ft_check_sign(str, &i, &sign);
 	while (str[i] && !(str[i] < '0' || str[i] > '9'))
 	{
 		if (LONG_MAX / 10 < num)
