@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 18:52:21 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/13 16:27:59 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/15 17:16:28 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,41 +19,28 @@ void	*print_test(void *philo)
 	
 	curphilo = (t_philo *)philo;
 	pthread_mutex_lock(&curphilo->sleep_mutex);
-	printf("\n%sphilosopher stats test %d\n", YELLOW, curphilo->id);
-	printf("\n%sphilo ID: %s%d%s\n", RESET, GREEN, curphilo->id, RESET);
-	printf("%sphilo meals_eaten: %s%d%s\n", RESET, GREEN, curphilo->meals_eaten, RESET);
-	printf("%sphilo last_eat_time: %s%d%s\n", RESET, GREEN, curphilo->last_eat_time, RESET);
-	printf("%sphilo is_eating: %s%s%s\n", RESET, GREEN, print_bool(curphilo->is_eating), RESET);
-	printf("%sphilo is_sleeping: %s%s%s\n", RESET, GREEN, print_bool(curphilo->is_sleeping), RESET);
-	printf("%sphilo is_dead: %s%s%s\n", RESET, GREEN, print_bool(curphilo->is_dead), RESET);
-	if (curphilo->left_fork)
-		printf("%sphilo left_fork_id: %s%d%s\n", RESET, GREEN, curphilo->left_fork->id, RESET);
-	else
-		printf("%sphilo left_fork_id: %snihil%s\n", RESET, GREEN, RESET);
-	printf("%sphilo right_fork_id: %s%d%s\n", RESET, GREEN, curphilo->right_fork->id, RESET);
+	curphilo->is_sleeping = true;
+	printf("\n%sphilosopher number %d stats:\n", YELLOW, curphilo->id);
+	printf("\n%sthread number: %s%ld\n", RESET, CYAN, curphilo->thread);
+	printf("%sID: %s%d%s\n", RESET, GREEN, curphilo->id, RESET);
+	printf("%smeals_eaten: %s%d%s\n", RESET, GREEN, curphilo->meals_eaten, RESET);
+	printf("%slast_eat_time: %s%d%s\n", RESET, GREEN, curphilo->last_eat_time, RESET);
+	print_custom_bool("%sis_eating: %s%s%s\n", curphilo->is_eating);
+	print_custom_bool("%sis_sleeping: %s%s%s\n", curphilo->is_sleeping);
+	print_custom_bool("%sis_dead: %s%s%s\n", curphilo->is_dead);
+	printf("%sleft_fork.id: %s%d%s\n", RESET, GREEN, curphilo->left_fork->id, RESET);
+	print_custom_bool("%sleft_fork.is_available: %s%s%s\n", curphilo->left_fork->is_available);
+	printf("%sright_fork.id: %s%d%s\n", RESET, GREEN, curphilo->right_fork->id, RESET);
+	print_custom_bool("%sright_fork.is_available: %s%s%s\n", curphilo->right_fork->is_available);
+	printf("%seat_mutex: %s%p%s\n", RESET, CYAN, &curphilo->eat_mutex, RESET);
+	printf("%ssleep_mutex: %s%p%s\n", RESET, CYAN, &curphilo->sleep_mutex, RESET);
+	printf("%sdead_mutex: %s%p%s\n", RESET, CYAN, &curphilo->dead_mutex, RESET);
+	usleep(150);
 	pthread_mutex_unlock(&curphilo->sleep_mutex);
+	curphilo->is_sleeping = false;
 	return (NULL);
 }
 
-void	*print_test_first_philo(void *philo)
-{
-	t_philo *curphilo;
-	
-	curphilo = (t_philo *)philo;
-	pthread_mutex_lock(&curphilo->sleep_mutex);
-	printf("\n%sphilosopher stats test %d\n", YELLOW, curphilo->id);
-	printf("\n%sphilo ID: %s%d%s\n", RESET, GREEN, curphilo->id, RESET);
-	printf("%sphilo meals_eaten: %s%d%s\n", RESET, GREEN, curphilo->meals_eaten, RESET);
-	printf("%sphilo last_eat_time: %s%d%s\n", RESET, GREEN, curphilo->last_eat_time, RESET);
-	printf("%sphilo is_eating: %s%s%s\n", RESET, GREEN, print_bool(curphilo->is_eating), RESET);
-	printf("%sphilo is_sleeping: %s%s%s\n", RESET, GREEN, print_bool(curphilo->is_sleeping), RESET);
-	printf("%sphilo is_dead: %s%s%s\n", RESET, GREEN, print_bool(curphilo->is_dead), RESET);
-	if (curphilo->left_fork)
-		printf("%sphilo left_fork_id: %s%d%s\n", RESET, GREEN, curphilo->left_fork->id, RESET);
-	printf("%sphilo right_fork_id: %s%d%s\n", RESET, GREEN, curphilo->right_fork->id, RESET);
-	pthread_mutex_unlock(&curphilo->sleep_mutex);
-	return (NULL);
-}
 /* SUBJECT
 About the logs of your program:
 

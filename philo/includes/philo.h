@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/13 16:29:21 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/15 17:30:25 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,19 @@ typedef struct s_env
 }	t_env;
 
 // FUNCTIONS
+
 //display.c
 void	*print_test(void *philo);
 void	*print_test_first_philo(void *philo);
 
-//ft_atoi.c
-int		ft_atoi(const char *str);
+//init.c
+t_env	init_env(char **av);
+bool	init_philosophers(t_env *env);
 
 //utils.c
 void	ft_putchar(char c);
 void	ft_putstr(char *str);
+int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
 
 #endif

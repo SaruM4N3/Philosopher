@@ -6,7 +6,7 @@
 #    By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/05/13 14:52:53 by zsonie           ###   ########.fr        #
+#    Updated: 2025/05/15 17:28:03 by zsonie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,9 @@ OBJDIR = obj
 
 SRCS = src/display.c\
 		src/error.c\
-		src/ft_atoi.c\
+		src/init.c\
 		src/main.c\
-		src/parsing.c\
+		src/philo.c\
 		src/utils.c
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
