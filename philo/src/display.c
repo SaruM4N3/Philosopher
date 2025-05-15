@@ -18,6 +18,7 @@ void	*print_test(void *philo)
 	t_philo *curphilo;
 	
 	curphilo = (t_philo *)philo;
+	pthread_mutex_lock(&curphilo->sleep_mutex);
 	printf("\n%sphilosopher stats test %d\n", YELLOW, curphilo->id);
 	printf("\n%sphilo ID: %s%d%s\n", RESET, GREEN, curphilo->id, RESET);
 	printf("%sphilo meals_eaten: %s%d%s\n", RESET, GREEN, curphilo->meals_eaten, RESET);
@@ -30,6 +31,7 @@ void	*print_test(void *philo)
 	else
 		printf("%sphilo left_fork_id: %snihil%s\n", RESET, GREEN, RESET);
 	printf("%sphilo right_fork_id: %s%d%s\n", RESET, GREEN, curphilo->right_fork->id, RESET);
+	pthread_mutex_unlock(&curphilo->sleep_mutex);
 	return (NULL);
 }
 
@@ -38,6 +40,7 @@ void	*print_test_first_philo(void *philo)
 	t_philo *curphilo;
 	
 	curphilo = (t_philo *)philo;
+	pthread_mutex_lock(&curphilo->sleep_mutex);
 	printf("\n%sphilosopher stats test %d\n", YELLOW, curphilo->id);
 	printf("\n%sphilo ID: %s%d%s\n", RESET, GREEN, curphilo->id, RESET);
 	printf("%sphilo meals_eaten: %s%d%s\n", RESET, GREEN, curphilo->meals_eaten, RESET);
@@ -48,6 +51,7 @@ void	*print_test_first_philo(void *philo)
 	if (curphilo->left_fork)
 		printf("%sphilo left_fork_id: %s%d%s\n", RESET, GREEN, curphilo->left_fork->id, RESET);
 	printf("%sphilo right_fork_id: %s%d%s\n", RESET, GREEN, curphilo->right_fork->id, RESET);
+	pthread_mutex_unlock(&curphilo->sleep_mutex);
 	return (NULL);
 }
 /* SUBJECT

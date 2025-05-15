@@ -24,10 +24,16 @@ t_env	init_env(char **av)
 		env.number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 	return (env);
 }
-void	init_fork(t_fork *fork, int id)
+bool	init_fork(t_fork *fork, int id)
 {
 	fork->id = id;
 	fork->is_available = false;
+	if (pthread_mutex_init(&fork->mutex, NULL) != 0)
+	{
+		printf("Fork %d init failed\n", fork->id);
+		return (false);
+	}
+	return (true);
 }
 
 bool	create_philo(t_env *env, int i)
@@ -47,12 +53,29 @@ bool	create_philo(t_env *env, int i)
 	env->philos[i].right_fork = malloc(sizeof(t_fork));
 	if (!env->philos[i].right_fork)
 		return (false);
-	init_fork(env->philos[i].right_fork, env->philos[i].id);
+	if (!init_fork(env->philos[i].right_fork, env->philos[i].id))
+	{
+		free(env->philos[i].right_fork);
+		return (false);
+	}
 	if (env->philos[i].id == env->number_of_philosophers)
 		env->last_fork = env->philos[i].right_fork;
-	usleep(100);
 	pthread_create(&env->philos[i].thread, NULL, print_test, &(env->philos[i]));
-	usleep(100);
+	if (pthread_mutex_init(&env->philos[i].eat_mutex, NULL) != 0)
+	{
+		printf("eat_mutex %d init failed\n", env->philos[i].id);
+		return (false);
+	}
+	if (pthread_mutex_init(&env->philos[i].sleep_mutex, NULL) != 0)
+	{
+		printf("sleep_mutex %d init failed\n",  env->philos[i].id);
+		return (false);
+	}
+	if (pthread_mutex_init(&env->philos[i].dead_mutex, NULL) != 0)
+	{
+		printf("dead_mutex %d init failed\n",  env->philos[i].id);
+		return (false);
+	}
 	return (true);
 }
 
@@ -85,6 +108,8 @@ int	main(int ac, char **av)
 	t_env env;
 	env = init_env(av);
 	if (!init_philosophers(&env))
+	{
 		return (1);
+	}
 	return (0);
 }
