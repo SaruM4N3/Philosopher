@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/15 18:43:12 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/16 14:10:28 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ bool	init_philosophers(t_env *env)
 	}
 	i = 0;
 	usleep(150);
-
 	while (i < env->number_of_philosophers)
 	{
 		if (pthread_join(env->philos[i].thread, NULL) != 0)

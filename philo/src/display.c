@@ -6,12 +6,13 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 18:52:21 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/15 17:16:28 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/16 14:17:41 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "error.h"
+#include <sys/time.h>
 
 void	*print_test(void *philo)
 {
@@ -39,6 +40,31 @@ void	*print_test(void *philo)
 	pthread_mutex_unlock(&curphilo->sleep_mutex);
 	curphilo->is_sleeping = false;
 	return (NULL);
+}
+
+long long timestamp_in_ms(void)
+{
+	struct timeval tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
+void print_action(t_philo *philo, int action)
+{
+	printf("%ld ", timestamp_in_ms());
+	if(action == FORK)
+		printf("%d has taken a fork", philo->id);
+	else if(action == EAT)
+		printf("%d is eating", philo->id);
+	else if(action == SLEEP)
+		printf("%d is sleeping", philo->id);
+	else if(action == THINK)
+		printf("%d is thinking", philo->id);
+	else if (action == DEAD)
+		printf("%d is dead", philo->id);
+	else
+		printf("ERROR: UNKNOW ACTION");
 }
 
 /* SUBJECT
