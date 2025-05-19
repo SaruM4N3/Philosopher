@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 18:52:21 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/16 14:17:41 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/19 14:52:27 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,17 @@ long long timestamp_in_ms(void)
 
 void print_action(t_philo *philo, int action)
 {
-	printf("%ld ", timestamp_in_ms());
+	printf("%lld ", timestamp_in_ms());
 	if(action == FORK)
-		printf("%d has taken a fork", philo->id);
+		printf("%d has taken a fork\n", philo->id);
 	else if(action == EAT)
-		printf("%d is eating", philo->id);
+		printf("%d is eating\n", philo->id);
 	else if(action == SLEEP)
-		printf("%d is sleeping", philo->id);
+		printf("%d is sleeping\n", philo->id);
 	else if(action == THINK)
-		printf("%d is thinking", philo->id);
+		printf("%d is thinking\n", philo->id);
 	else if (action == DEAD)
-		printf("%d is dead", philo->id);
+		printf("%d is dead\n", philo->id);
 	else
 		printf("ERROR: UNKNOW ACTION");
 }

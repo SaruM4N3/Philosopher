@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/15 18:09:04 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/19 14:51:50 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_free(t_env *env)
 	int	i;
 
 	i = 0;
-	while (i < env->number_of_philosophers)
+	while (i < env->info->number_of_philosophers)
 	{
 		pthread_mutex_destroy(&env->philos[i].right_fork->mutex);
 		free(env->philos[i].right_fork);
@@ -41,7 +41,7 @@ int	main(int ac, char **av)
 	env = init_env(av);
 	if (!init_philosophers(&env))
 	{
-		ft_free(&env);
+		// ft_free(&env);
 		return (1);
 	}
 	return (0);

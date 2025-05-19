@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/16 14:16:22 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/19 14:22:53 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ typedef struct s_fork
 	pthread_mutex_t	mutex;
 }					t_fork;
 
+typedef struct s_info
+{
+	int				number_of_philosophers;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_times_each_philosopher_must_eat;
+	int				start_time;
+	t_fork			*last_fork;
+}					t_info;
 typedef struct s_philo
 {
 	pthread_t		thread;
@@ -43,6 +53,7 @@ typedef struct s_philo
 	bool			is_eating;
 	bool			is_sleeping;
 	bool			is_dead;
+	t_info			*info;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	pthread_mutex_t	eat_mutex;
@@ -52,17 +63,14 @@ typedef struct s_philo
 
 typedef struct s_env
 {
-	int				number_of_philosophers;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
-	int				start_time;
+	t_info			*info;
 	t_philo			*philos;
-	t_fork			*last_fork;
 }					t_env;
 
 // FUNCTIONS
+
+//philo.c
+void				*life(void *philo);
 
 //display.c
 void				print_action(t_philo *philo, int action);
