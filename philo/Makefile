@@ -6,13 +6,13 @@
 #    By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/05/15 17:28:03 by zsonie           ###   ########.fr        #
+#    Updated: 2025/05/19 18:07:46 by zsonie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philosopher
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -lc
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
 INC = -I includes

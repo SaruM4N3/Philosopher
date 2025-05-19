@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:28 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/19 14:33:53 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/19 18:16:37 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,19 @@ void	eat(t_philo *philo)
 		grab_fork(philo);
 		philo->is_eating = true;
 		pthread_mutex_lock(&philo->eat_mutex);
+		philo->left_fork->is_available = false;
+		philo->right_fork->is_available = false;
 		print_action(philo, EAT);
 		philo->last_eat_time = timestamp_in_ms();
 		philo->meals_eaten++;
+		philo->left_fork->is_available = true;
+		philo->right_fork->is_available = true;
 		pthread_mutex_unlock(&(philo->left_fork->mutex));
 		pthread_mutex_unlock(&(philo->right_fork->mutex));
 	}
 	else
 		print_test((void *) philo);
+	pthread_mutex_unlock(&philo->eat_mutex);
 }
 
 void	*life(void *philo)

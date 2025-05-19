@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/19 14:49:52 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/19 18:18:55 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ bool	init_philosophers(t_env *env)
 		i++;
 	}
 	env->philos[0].left_fork = env->info->last_fork;
-	usleep(150);
 	i = 0;
 	while (i < env->info->number_of_philosophers)
 	{
@@ -112,7 +111,6 @@ bool	init_philosophers(t_env *env)
 		i++;
 	}
 	i = 0;
-	usleep(150);
 	while (i < env->info->number_of_philosophers)
 	{
 		if (pthread_join(env->philos[i].thread, NULL) != 0)
