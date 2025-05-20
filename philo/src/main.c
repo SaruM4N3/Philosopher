@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/19 14:51:50 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/20 17:13:12 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_free(t_env *env)
 int	main(int ac, char **av)
 {
 	t_env	env;
+	int		i;
 
 	if (ac < 5 || ac > 6)
 	{
@@ -41,8 +42,22 @@ int	main(int ac, char **av)
 	env = init_env(av);
 	if (!init_philosophers(&env))
 	{
-		// ft_free(&env);
+		ft_free(&env);
 		return (1);
+	}
+	i = 0;
+	while (i < env.info->number_of_philosophers)
+	{
+		if (!init_thread(env.philos[i]))
+			return (false);
+		i++;
+	}
+	i = 0;
+	while (i < env.info->number_of_philosophers)
+	{
+		if (pthread_join(env.philos[i].thread, NULL) != 0)
+			return (false);
+		i++;
 	}
 	return (0);
 }

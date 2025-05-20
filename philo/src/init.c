@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/19 18:18:55 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/20 17:17:07 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static bool	create_philo(t_env *env, int i)
 	return (true);
 }
 
-static bool	init_thread(t_philo philo)
+bool	init_thread(t_philo philo)
 {
 	pthread_create(&philo.thread, NULL, &life, &philo);
 	if (pthread_mutex_init(&philo.eat_mutex, NULL) != 0)
@@ -103,19 +103,5 @@ bool	init_philosophers(t_env *env)
 		i++;
 	}
 	env->philos[0].left_fork = env->info->last_fork;
-	i = 0;
-	while (i < env->info->number_of_philosophers)
-	{
-		if (!init_thread(env->philos[i]))
-			return (false);
-		i++;
-	}
-	i = 0;
-	while (i < env->info->number_of_philosophers)
-	{
-		if (pthread_join(env->philos[i].thread, NULL) != 0)
-			return (false);
-		i++;
-	}
 	return (true);
 }

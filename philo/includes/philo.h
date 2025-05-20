@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/19 14:22:53 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/05/20 17:09:25 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ long long			timestamp_in_ms(void);
 //init.c
 t_env				init_env(char **av);
 bool				init_philosophers(t_env *env);
+bool				init_thread(t_philo philo);
 
 //utils.c
 void				ft_putchar(char c);
