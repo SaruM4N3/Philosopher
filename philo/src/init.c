@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/20 17:17:07 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/06/26 17:13:42 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,50 +52,73 @@ static bool	create_philo(t_env *env, int i)
 	return (true);
 }
 
-bool	init_thread(t_philo philo)
+bool	init_thread(t_philo *philo)
 {
-	pthread_create(&philo.thread, NULL, &life, &philo);
-	if (pthread_mutex_init(&philo.eat_mutex, NULL) != 0)
+	if (pthread_create(&philo->thread, NULL, &life, philo) != 0)
 	{
-		printf("eat_mutex %d init failed\n", philo.id);
+		printf("Failed to create thread for philosopher %d\n", philo->id);
 		return (false);
 	}
-	if (pthread_mutex_init(&philo.sleep_mutex, NULL) != 0)
+	if (pthread_mutex_init(&philo->eat_mutex, NULL) != 0)
 	{
-		printf("sleep_mutex %d init failed\n", philo.id);
+		printf("eat_mutex %d init failed\n", philo->id);
 		return (false);
 	}
-	if (pthread_mutex_init(&philo.dead_mutex, NULL) != 0)
+	if (pthread_mutex_init(&philo->sleep_mutex, NULL) != 0)
 	{
-		printf("dead_mutex %d init failed\n", philo.id);
+		printf("sleep_mutex %d init failed\n", philo->id);
+		return (false);
+	}
+	if (pthread_mutex_init(&philo->dead_mutex, NULL) != 0)
+	{
+		printf("dead_mutex %d init failed\n", philo->id);
 		return (false);
 	}
 	usleep(100);
 	return (true);
 }
 
-t_env	init_env(char **av)
+t_env init_env(char **av)
 {
-	t_env	env;
-	env.info = malloc(sizeof(t_info *));
-	env.info->number_of_philosophers = ft_atoi(av[1]);
-	env.info->time_to_die = ft_atoi(av[2]);
-	env.info->time_to_eat = ft_atoi(av[3]);
-	env.info->time_to_sleep = ft_atoi(av[4]);
-	if (av[5])
-		env.info->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
-	return (env);
+    t_env env;
+    
+    env.info = NULL;
+    env.philos = NULL;
+    
+    env.info = malloc(sizeof(t_info));
+    if (!env.info)
+        return env;
+        
+    env.info->number_of_philosophers = ft_atoi(av[1]);
+    env.info->time_to_die = ft_atoi(av[2]);
+    env.info->time_to_eat = ft_atoi(av[3]);
+    env.info->time_to_sleep = ft_atoi(av[4]);
+    env.info->number_of_times_each_philosopher_must_eat = (av[5] ? ft_atoi(av[5]) : -1);
+    env.info->simulation_ended = false;
+    
+    if (pthread_mutex_init(&env.info->sim_mutex, NULL) != 0 ||
+        pthread_mutex_init(&env.info->print_mutex, NULL) != 0) {
+        free(env.info);
+        env.info = NULL;
+        return env;
+    }
+    return env;
 }
 
 bool	init_philosophers(t_env *env)
 {
 	int	i;
 
-	env->info->start_time = timestamp_in_ms();
 	i = 0;
-	env->philos = malloc(sizeof(t_philo) * (env->info->number_of_philosophers + 1));
+	env->philos = malloc(sizeof(t_philo) * (env->info->number_of_philosophers
+				+ 1));
 	if (!env->philos)
 		return (false);
+	env->info->start_time = timestamp_in_ms();
+	for (int i = 0; i < env->info->number_of_philosophers; i++)
+	{
+		env->philos[i].last_eat_time = env->info->start_time;
+	}
 	while (i < env->info->number_of_philosophers)
 	{
 		if (!create_philo(env, i))
@@ -103,5 +126,9 @@ bool	init_philosophers(t_env *env)
 		i++;
 	}
 	env->philos[0].left_fork = env->info->last_fork;
-	return (true);
+    env->info->start_time = timestamp_in_ms();
+    for (int i = 0; i < env->info->number_of_philosophers; i++) {
+        env->philos[i].last_eat_time = 0;
+    }
+    return true;
 }

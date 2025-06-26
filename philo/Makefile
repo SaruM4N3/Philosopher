@@ -6,7 +6,7 @@
 #    By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/05/19 18:07:46 by zsonie           ###   ########.fr        #
+#    Updated: 2025/06/25 16:16:33 by zsonie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,9 @@ SRCS = src/display.c\
 		src/init.c\
 		src/main.c\
 		src/philo.c\
-		src/utils.c
+		src/monitor.c\
+		src/utils.c\
+		src/utils2.c
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 

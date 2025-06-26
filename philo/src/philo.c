@@ -6,74 +6,89 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:28 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/20 16:48:31 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/06/26 14:50:41 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	grab_fork(t_philo *philo)
+bool grab_forks(t_philo *p)
 {
-	pthread_mutex_lock(&(philo->left_fork->mutex));
-	print_action(philo, FORK);
-	if (philo->info->number_of_philosophers == 1)
-	{
-		usleep(philo->info->time_to_die + 1);
-		return ;
-	}
-	pthread_mutex_lock(&(philo->right_fork->mutex));
-	print_action(philo, FORK);
+    if (p->info->number_of_philosophers == 1)
+    {
+        pthread_mutex_lock(&p->left_fork->mutex);
+        print_action(p, FORK);
+        precise_usleep(p->info->time_to_die + 10);
+        return (false);
+    }
+    if (p->id % 2 == 0)
+    {
+        pthread_mutex_lock(&p->right_fork->mutex);
+        print_action(p, FORK);
+        pthread_mutex_lock(&p->left_fork->mutex);
+        print_action(p, FORK);
+    }
+    else
+    {
+        pthread_mutex_lock(&p->left_fork->mutex);
+        print_action(p, FORK);
+        pthread_mutex_lock(&p->right_fork->mutex);
+        print_action(p, FORK);
+    }
+    return (true);
 }
 
-void	release_fork(t_philo *philo)
+void	release_forks(t_philo *philo)
 {
-	__builtin_printf("release\n");
-	if (!philo->left_fork->is_available && !philo->right_fork->is_available)
-	{
-		philo->left_fork->is_available = true;
-		philo->right_fork->is_available = true;
-		pthread_mutex_unlock(&philo->left_fork->mutex);
-		pthread_mutex_unlock(&philo->right_fork->mutex);
-	}
+	pthread_mutex_unlock(&philo->left_fork->mutex);
+	pthread_mutex_unlock(&philo->right_fork->mutex);
 }
 
-void	philo_eat(t_philo *philo)
+bool philo_eat(t_philo *philo)
 {
-	grab_fork(philo);
-	philo->is_eating = true;
-	pthread_mutex_lock(&philo->eat_mutex);
-	philo->left_fork->is_available = false;
-	philo->right_fork->is_available = false;
-	philo->last_eat_time = timestamp_in_ms();
-	philo->meals_eaten++;
-	print_action(philo, EAT);
-	pthread_mutex_unlock(&philo->eat_mutex);
+    if (!grab_forks(philo))
+        return false;
+
+    pthread_mutex_lock(&philo->eat_mutex);
+    philo->last_eat_time = get_current_time(philo->info); // Use simulation-relative time
+    philo->meals_eaten++;
+    print_action(philo, EAT);
+    pthread_mutex_unlock(&philo->eat_mutex);
+
+    precise_usleep(philo->info->time_to_eat * 1000); // Convert ms to μs
+    
+    release_forks(philo);
+    return true;
 }
 
-void	philo_sleep(t_philo *philo)
+void philo_sleep(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->sleep_mutex);
-	print_action(philo, SLEEP);
+    print_action(philo, SLEEP);
+    precise_usleep(philo->info->time_to_sleep * 1000); // Convert ms to μs
 }
 
-void	*life(void *philo)
+void	philo_think(t_philo *p)
 {
-	t_philo	*curphilo;
+	print_action(p, THINK);
+	usleep(100 * (p->id % 5 + 1));
+}
 
-	curphilo = (t_philo *)philo;
-	if (curphilo->is_eating || curphilo->is_dead || curphilo->is_sleeping)
-	{
-		printf("ERROR: already in action\n");
-		return NULL;
-	}
-	if (curphilo->left_fork->is_available && curphilo->right_fork->is_available)
-	{
-		philo_eat(curphilo);
-	}
-	else 
-		philo_sleep(curphilo);
-	print_action(curphilo, THINK);
-	pthread_join(curphilo->thread, NULL);
-	release_fork(curphilo);
-	return (NULL);
+void *life(void *philo)
+{
+    t_philo *p = (t_philo *)philo;
+    
+    // Stagger start times more effectively
+    if (p->id % 2 == 0)
+        precise_usleep(p->info->time_to_eat * 1000 / 2);
+    
+    while (!simulation_should_end(p->info))
+    {
+        philo_think(p);
+        if (!philo_eat(p))
+            break;
+        if (simulation_should_end(p->info))
+            break;
+        philo_sleep(p);
+    }
+    return NULL;
 }

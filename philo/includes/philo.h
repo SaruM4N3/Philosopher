@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/20 17:09:25 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/06/25 16:45:15 by zsonie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ typedef struct s_info
 	int				number_of_times_each_philosopher_must_eat;
 	int				start_time;
 	t_fork			*last_fork;
+
+	bool			simulation_ended;
+	pthread_mutex_t	sim_mutex;
+
+	pthread_mutex_t print_mutex;
 }					t_info;
 typedef struct s_philo
 {
@@ -70,7 +75,13 @@ typedef struct s_env
 // FUNCTIONS
 
 //philo.c
+bool				grab_forks(t_philo *p);
 void				*life(void *philo);
+
+//monitor.c
+bool				simulation_should_end(t_info *info);
+void				set_simulation_end(t_info *info);
+void				*monitor_routine(void *env_ptr);
 
 //display.c
 void				print_action(t_philo *philo, int action);
@@ -81,7 +92,7 @@ long long			timestamp_in_ms(void);
 //init.c
 t_env				init_env(char **av);
 bool				init_philosophers(t_env *env);
-bool				init_thread(t_philo philo);
+bool				init_thread(t_philo *philo);
 
 //utils.c
 void				ft_putchar(char c);
@@ -89,4 +100,8 @@ void				ft_putstr(char *str);
 int					ft_atoi(const char *str);
 int					ft_strlen(char *str);
 
+//utils2.c
+void				precise_usleep(long long milliseconds);
+bool				validate_input(t_info *info, char **av);
+long long			get_current_time(t_info *info);
 #endif
