@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/06/25 16:45:15 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/08/21 13:32:38 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,9 @@ int					ft_strlen(char *str);
 void				precise_usleep(long long milliseconds);
 bool				validate_input(t_info *info, char **av);
 long long			get_current_time(t_info *info);
+
+//simulation.c
+bool	init_simulation(t_env *env, char **av);
+bool launch_simulation(t_env *env);
+
 #endif

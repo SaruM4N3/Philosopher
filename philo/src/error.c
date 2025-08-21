@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:06:52 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/15 15:41:48 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/08/21 13:35:16 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
-#include "philo.h"
+#include "../includes/philo.h"
+#include "../includes/error.h"
 
 void	print_custom_error(int err)
 {

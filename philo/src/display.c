@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 18:52:21 by zsonie            #+#    #+#             */
-/*   Updated: 2025/06/26 17:13:59 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/08/21 13:29:02 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-#include "error.h"
+#include "../includes/philo.h"
+#include "../includes/error.h"
 #include <sys/time.h>
 
 void	*print_test(void *philo)

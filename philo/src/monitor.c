@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 14:51:42 by zsonie            #+#    #+#             */
-/*   Updated: 2025/06/26 17:12:24 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/08/21 13:35:12 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	*monitor_routine(void *env_ptr)
 {
 	int		i;
 	bool	all_ate_enough;
+	t_env	*env = (t_env *) env_ptr;
 
 	precise_usleep(env->info->time_to_eat * 500);
 	while (!simulation_should_end(env->info))
