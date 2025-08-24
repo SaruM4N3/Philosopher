@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/21 13:32:38 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/24 13:08:23 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ typedef struct s_env
 
 //philo.c
 bool				grab_forks(t_philo *p);
+void				philo_dead(t_philo *p);
 void				*life(void *philo);
 
 //monitor.c
-bool				simulation_should_end(t_info *info);
-void				set_simulation_end(t_info *info);
+
 void				*monitor_routine(void *env_ptr);
 
 //display.c
@@ -106,7 +106,8 @@ bool				validate_input(t_info *info, char **av);
 long long			get_current_time(t_info *info);
 
 //simulation.c
-bool	init_simulation(t_env *env, char **av);
-bool launch_simulation(t_env *env);
+bool				init_simulation(t_env *env, char **av);
+bool				launch_simulation(t_env *env);
+void				set_simulation_end(t_info *info, bool end);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/21 13:30:50 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/24 13:07:12 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,16 @@ static bool	parse_args(int ac)
 	return (true);
 }
 
-
-
 int	main(int ac, char **av)
 {
 	t_env	env = {0};
 
 	if (!parse_args(ac))
 		return (1);
-	__builtin_printf("Philosophers simulation started with %d philosophers.\n", ft_atoi(av[1]));
+	// __builtin_printf("Philosophers simulation started with %d philosophers.\n", ft_atoi(av[1]));
 	if (!init_simulation(&env, av) || !launch_simulation(&env))
 	{
+		set_simulation_end(env.info, true);
 		ft_free(&env);
 		return (1);
 	}

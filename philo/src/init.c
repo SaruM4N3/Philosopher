@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/21 13:29:17 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/23 08:59:26 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ static bool	create_philo(t_env *env, int i)
 	env->philos[i].id = i + 1;
 	env->philos[i].info = env->info;
 	env->philos[i].meals_eaten = 0;
-	if (env->philos[i].id == 3)
-		env->philos[i].meals_eaten = 3;
 	env->philos[i].last_eat_time = 0;
 	env->philos[i].is_eating = false;
 	env->philos[i].is_sleeping = false;
@@ -116,9 +114,7 @@ bool	init_philosophers(t_env *env)
 		return (false);
 	env->info->start_time = timestamp_in_ms();
 	for (int i = 0; i < env->info->number_of_philosophers; i++)
-	{
-		env->philos[i].last_eat_time = env->info->start_time;
-	}
+	env->info->start_time = timestamp_in_ms();
 	while (i < env->info->number_of_philosophers)
 	{
 		if (!create_philo(env, i))
@@ -126,9 +122,9 @@ bool	init_philosophers(t_env *env)
 		i++;
 	}
 	env->philos[0].left_fork = env->info->last_fork;
-    env->info->start_time = timestamp_in_ms();
-    for (int i = 0; i < env->info->number_of_philosophers; i++) {
-        env->philos[i].last_eat_time = 0;
-    }
-    return true;
+	env->info->start_time = timestamp_in_ms();
+	for (int i = 0; i < env->info->number_of_philosophers; i++) {
+		env->philos[i].last_eat_time = env->info->start_time;
+	}
+	return true;
 }

@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:26:18 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/21 13:31:29 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/24 13:08:00 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ bool	init_simulation(t_env *env, char **av)
 	if (!env->info)
 		return (false);
 	return (init_philosophers(env));
+}
+
+void	set_simulation_end(t_info *info, bool end)
+{
+	pthread_mutex_lock(&info->sim_mutex);
+	info->simulation_ended = end;
 }
 
 bool launch_simulation(t_env *env)
@@ -33,8 +39,8 @@ bool launch_simulation(t_env *env)
         if (pthread_create(&env->philos[i].thread, NULL, 
             &life, &env->philos[i]) != 0)
         {
-            set_simulation_end(env->info);
-            break;
+            // set_simulation_end(env->info, true);
+            return (false);
         }
         i++;
     }

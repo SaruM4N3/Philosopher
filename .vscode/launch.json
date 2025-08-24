@@ -2,23 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
+      "name": "Debug C",
       "type": "cppdbg",
       "request": "launch",
+      "program": "${workspaceFolder}/philosopher",
       "args": [],
       "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
       "externalConsole": false,
-      "cwd": "/home/zsonie/Music/philosopher/Philosopher",
-      "program": "/home/zsonie/Music/philosopher/Philosopher/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ]
+      "miDebuggerPath": "/usr/bin/gdb",
+      "preLaunchTask": "build"
     }
   ]
 }
