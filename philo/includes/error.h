@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zsonie <zsonie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:11:22 by zsonie            #+#    #+#             */
-/*   Updated: 2025/05/15 15:55:18 by zsonie           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:07:31 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define ERR_ARG 1001
 //Messages
 # define ERR_MESSAGE "ERROR :\t"
+# define ERR_TIME_MESSAGE "%sGettimeofday error occured\n"
 # define ARG_MESSAGE "%sWrong nbr of arguments...\n\n\
 %sPls procced as follow:\n%s./philosopher \
 number_of_philosophers \

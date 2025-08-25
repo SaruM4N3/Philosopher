@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 13:49:42 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 14:21:28 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ typedef struct s_philo
 	int				last_eat_time;
 	int				self_death_time;
 
-	pthread_mutex_t	lock;
+	bool			is_eating;
+
+	pthread_mutex_t	mutex;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 }					t_philo;
