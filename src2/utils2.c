@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:21:57 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 15:04:17 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 16:01:48 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../includes/error.h"
 #include <sys/time.h>
 
-static long long timestamp_in_ms(void)
+long long timestamp_in_ms(void)
 {
 	struct timeval tv;
 

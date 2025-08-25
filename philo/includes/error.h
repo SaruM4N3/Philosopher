@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:11:22 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 14:07:31 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 15:58:00 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 //Error
 # define ERR_ARG 1001
+# define ERR_PTR (void *)1
 //Messages
 # define ERR_MESSAGE "ERROR :\t"
 # define ERR_TIME_MESSAGE "%sGettimeofday error occured\n"

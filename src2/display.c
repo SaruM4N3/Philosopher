@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 18:52:21 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 14:10:28 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 16:05:52 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*print_test(void *philo)
 
 void print_action(t_philo *philo, int action)
 {
-	pthread_mutex_lock(&philo->env_info->print_mutex);
+	pthread_mutex_lock(&philo->env_data->print_mutex);
 	printf("%lld ", timestamp_in_ms());
 	if(action == FORK)
 		printf("%d has taken a fork\n", philo->id);
@@ -45,5 +45,5 @@ void print_action(t_philo *philo, int action)
 		printf("%d is dead\n", philo->id);
 	else
 		printf("ERROR: UNKNOW ACTION");
-	pthread_mutex_unlock(&philo->env_info->print_mutex);
+	pthread_mutex_unlock(&philo->env_data->print_mutex);
 }

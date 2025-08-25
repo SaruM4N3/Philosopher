@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 15:20:07 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 15:42:38 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ bool	init_forks(t_env *env)
 	while (++i < env->number_of_philosophers)
 	{
 		env->forks->id = i;
-		//not sure if i need to secure mutexes initialization (ask timeo or david!!!)
 		if (pthread_mutex_init(&env->forks->mutex, NULL) != 0)
 		{
 			printf("Fork %d init failed\n", env->forks->id);
@@ -97,8 +96,27 @@ bool	init_forks(t_env *env)
 
 bool	init_threads(t_env *env)
 {
+	int i;
+	pthread_t monitor_thread;
+	
 	env->thread = malloc(sizeof(pthread_t) * env->number_of_philosophers);
 	if (!env->thread)
 		return (false);
+		env->start_time = get_current_time(env);
+	if (pthread_create(&monitor_thread, NULL, &monitor_routine, env) != 0)
+		return (false);
+	i = -1;
+	while (++i < env->number_of_philosophers)
+	{
+		if (pthread_create(&env->thread[i], NULL, &philo_routine, &env->philosophers[i]) != 0)
+			return (false);
+		precise_usleep(10);
+	}
+	i = -1;
+	while (++i < env->number_of_philosophers)
+	{
+		if (pthread_join(env->thread[i], NULL) != 0)
+			return (false);
+	}
 	return (true);
 }
