@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:11:38 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 14:10:48 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 15:03:56 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,4 @@ int		ft_strlen(char *str)
 	while (str[len])
 		len++;
 	return (len);
-}
-
-void	ft_putstr(char *str)
-{
-	int len;
-	len = ft_strlen(str);
-	write(1, str, len);
 }

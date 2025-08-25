@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 14:21:28 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 15:18:11 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define EAT 1001
-# define FORK 1002
-# define SLEEP 1003
-# define THINK 1004
-# define DEAD 1005
+# define EAT 4201
+# define FORK 4202
+# define SLEEP 4203
+# define THINK 4204
+# define DEAD 4205
 
 //STRUCTS
 typedef struct s_fork
@@ -35,7 +35,7 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	struct s_env	*env_info;
+	struct s_env	*env_data;
 	pthread_t		thread;
 
 	int				id;
@@ -53,7 +53,7 @@ typedef struct s_philo
 
 typedef struct s_env
 {
-	pthread_t		thread;
+	pthread_t		*thread;
 
 	int				number_of_philosophers;
 	int				time_to_die;
@@ -62,8 +62,8 @@ typedef struct s_env
 	int				number_of_times_each_philosopher_must_eat;
 	
 	int				start_time;
-	int				dead;
-	int 			finished;
+	bool			dead;
+	bool 			finished;
 	
 	t_philo			*philosophers;
 	t_fork			*forks;
@@ -76,39 +76,27 @@ typedef struct s_env
 // FUNCTIONS
 
 //philo.c
-bool				grab_forks(t_philo *p);
-void				philo_dead(t_philo *p);
-void				*life(void *philo);
-
-//monitor.c
-
-void				*monitor_routine(void *env_ptr);
+void				grab_forks(t_philo *p);
 
 //display.c
 void				print_action(t_philo *philo, int action);
 void				*print_test(void *philo);
 void				*print_test_first_philo(void *philo);
-long long			timestamp_in_ms(void);
 
 //init.c
-t_env				init_env(char **av);
+t_env				init_env(char **av, int ac);
 bool				init_philosophers(t_env *env);
-bool				init_thread(t_philo *philo);
+bool				init_forks(t_env *env);
+bool				init_threads(t_env *env);
 
 //utils.c
-void				ft_putchar(char c);
-void				ft_putstr(char *str);
 int					ft_atoi(const char *str);
 int					ft_strlen(char *str);
 
 //utils2.c
+long long			get_current_time(t_env *env_data);
 void				precise_usleep(long long milliseconds);
-bool				validate_input(t_info *info, char **av);
-long long			get_current_time(t_info *info);
+bool				validate_input(t_env *env_data, char **av);
 
-//simulation.c
-bool				init_simulation(t_env *env, char **av);
-bool				launch_simulation(t_env *env);
-void				set_simulation_end(t_info *info, bool end);
 
 #endif
