@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/24 13:08:23 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 13:49:42 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,47 +30,46 @@
 typedef struct s_fork
 {
 	int				id;
-	bool			is_available;
 	pthread_mutex_t	mutex;
 }					t_fork;
 
-typedef struct s_info
+typedef struct s_philo
 {
+	struct s_env	*env_info;
+	pthread_t		thread;
+
+	int				id;
+	int				meals_count;
+	int				current_state;
+	int				last_eat_time;
+	int				self_death_time;
+
+	pthread_mutex_t	lock;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
+}					t_philo;
+
+typedef struct s_env
+{
+	pthread_t		thread;
+
 	int				number_of_philosophers;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
+	
 	int				start_time;
-	t_fork			*last_fork;
-
-	bool			simulation_ended;
+	int				dead;
+	int 			finished;
+	
+	t_philo			*philosophers;
+	t_fork			*forks;
 	pthread_mutex_t	sim_mutex;
-
 	pthread_mutex_t print_mutex;
-}					t_info;
-typedef struct s_philo
-{
-	pthread_t		thread;
-	int				id;
-	int				meals_eaten;
-	int				last_eat_time;
-	bool			is_eating;
-	bool			is_sleeping;
-	bool			is_dead;
-	t_info			*info;
-	t_fork			*left_fork;
-	t_fork			*right_fork;
-	pthread_mutex_t	eat_mutex;
-	pthread_mutex_t	sleep_mutex;
-	pthread_mutex_t	dead_mutex;
-}					t_philo;
-
-typedef struct s_env
-{
-	t_info			*info;
-	t_philo			*philos;
 }					t_env;
+
+
 
 // FUNCTIONS
 

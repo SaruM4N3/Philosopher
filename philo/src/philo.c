@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:28 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/24 13:09:59 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/24 15:00:02 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ void *life(void *philo)
         print_action(p, THINK);
 	    usleep(100);
         if (!philo_eat(p))
-            break;
-        philo_sleep(p);
+            philo_sleep(p);
     }
     return NULL;
 }

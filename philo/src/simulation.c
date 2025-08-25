@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:26:18 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/24 13:08:00 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/24 14:50:45 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ bool	init_simulation(t_env *env, char **av)
 
 void	set_simulation_end(t_info *info, bool end)
 {
-	pthread_mutex_lock(&info->sim_mutex);
-	info->simulation_ended = end;
+    pthread_mutex_lock(&info->sim_mutex);
+    info->simulation_ended = end;
+    pthread_mutex_unlock(&info->sim_mutex);
 }
 
 bool launch_simulation(t_env *env)
@@ -39,17 +40,13 @@ bool launch_simulation(t_env *env)
         if (pthread_create(&env->philos[i].thread, NULL, 
             &life, &env->philos[i]) != 0)
         {
-            // set_simulation_end(env->info, true);
+            set_simulation_end(env->info, true);
+            while (--i >= 0)
+                pthread_join(env->philos[i].thread, NULL);
+            pthread_join(monitor_thread, NULL);
             return (false);
         }
         i++;
-    }
-    if (i < env->info->number_of_philosophers)
-    {
-        while (--i >= 0)
-            pthread_join(env->philos[i].thread, NULL);
-        pthread_join(monitor_thread, NULL);
-        return (false);
     }
     pthread_join(monitor_thread, NULL);
     i = 0;
