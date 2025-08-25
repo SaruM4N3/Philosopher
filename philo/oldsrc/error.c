@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:06:52 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 17:39:49 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 14:06:27 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_custom_error(int err)
 	{
 		printf(ERR_MESSAGE ARG_MESSAGE, RED, YELLOW, GREEN, RESET);
 	}
-	else if (err == ERR_TIME)
+	else if (err == ERR_TIME_MESSAGE)
 	{
 		printf(ERR_MESSAGE ERR_TIME_MESSAGE, RED, RESET);
 	}
@@ -47,12 +47,4 @@ char	*print_bool(bool b)
 void    print_custom_bool(char *message, bool b)
 {
 	printf(message, RESET, colored_bool(b), print_bool(b), RESET);
-}
-
-int error_exit(int err, t_env *env)
-{
-	print_custom_error(err);
-	if (env)
-		destroy_and_free(env);
-	return (1);
 }

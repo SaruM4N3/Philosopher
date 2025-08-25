@@ -6,19 +6,19 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 16:06:37 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 17:57:06 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "error.h"
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/time.h>
 
 # define EAT 4201
 # define FORK 4202
@@ -63,7 +63,7 @@ typedef struct s_env
 	
 	int				start_time;
 	bool			dead;
-	bool 			finished;
+	int 			finished;
 	
 	t_philo			*philosophers;
 	t_fork			*forks;
@@ -85,6 +85,7 @@ t_env				init_env(char **av, int ac);
 bool				init_philosophers(t_env *env);
 bool				init_forks(t_env *env);
 bool				init_threads(t_env *env);
+int					init_all(char **av, int ac, t_env *env);
 
 //monitor.c
 void				*monitor_routine(void *env_ptr);
@@ -93,6 +94,8 @@ void				*philo_routine(void *philo_ptr);
 
 //philo.c
 void				grab_forks(t_philo *p);
+void				release_forks(t_philo *philo);
+void				philo_eat(t_philo *philo);
 
 //utils.c
 int					ft_atoi(const char *str);
@@ -101,7 +104,7 @@ int					ft_strlen(char *str);
 //utils2.c
 long long			timestamp_in_ms(void);
 long long			get_current_time(t_env *env_data);
-void				precise_usleep(long long milliseconds);
+void				precise_usleep(__useconds_t milliseconds);
 bool				validate_input(t_env *env_data, char **av);
 
 

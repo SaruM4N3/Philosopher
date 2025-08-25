@@ -6,38 +6,29 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/24 13:07:12 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 17:43:47 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+#include "../includes/error.h"
 
-static void	ft_free(t_env *env)
+void	destroy_and_free(t_env *env)
 {
 	int	i;
 
-	if (!env || !env->info || !env->philos)
-		return;
-		
 	i = 0;
-	while (i < env->info->number_of_philosophers)
+	while (i < env->number_of_philosophers)
 	{
-		if (env->philos[i].right_fork)
-		{
-			pthread_mutex_destroy(&env->philos[i].right_fork->mutex);
-			free(env->philos[i].right_fork);
-		}
-		pthread_mutex_destroy(&env->philos[i].eat_mutex);
-		pthread_mutex_destroy(&env->philos[i].sleep_mutex);
-		pthread_mutex_destroy(&env->philos[i].dead_mutex);
+		pthread_mutex_destroy(&env->forks[i].mutex);
+		pthread_mutex_destroy(&env->philosophers[i].mutex);
 		i++;
 	}
-	free(env->philos);
-	if (env->info)
-	{
-		pthread_mutex_destroy(&env->info->sim_mutex);
-		free(env->info);
-	}
+	pthread_mutex_destroy(&env->sim_mutex);
+	pthread_mutex_destroy(&env->print_mutex);
+	free(env->forks);
+	free(env->philosophers);
+	free(env->thread);
 }
 
 static bool	parse_args(int ac)
@@ -56,14 +47,15 @@ int	main(int ac, char **av)
 
 	if (!parse_args(ac))
 		return (1);
-	// __builtin_printf("Philosophers simulation started with %d philosophers.\n", ft_atoi(av[1]));
-	if (!init_simulation(&env, av) || !launch_simulation(&env))
+	if (!validate_input(&env, av))
+		return (1);	
+	if (!init_all(av, ac, &env))
 	{
-		set_simulation_end(env.info, true);
-		ft_free(&env);
+		print_custom_error(ERR_ARG);
+		destroy_and_free(&env);
 		return (1);
 	}
 	
-	ft_free(&env);
+	destroy_and_free(&env);
 	return (0);
 }
