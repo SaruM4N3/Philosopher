@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 17:42:49 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/26 17:36:01 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_env init_env(char **av, int ac)
 {
     t_env env;
     
-	env.thread = NULL;
+	env.threads = NULL;
     env.number_of_philosophers = ft_atoi(av[1]);
     env.time_to_die = ft_atoi(av[2]);
     env.time_to_eat = ft_atoi(av[3]);
@@ -33,7 +33,6 @@ t_env init_env(char **av, int ac)
 	
 	env.philosophers = NULL;
 	env.forks = NULL;
-	//not sure if i need to secure mutexes initialization (ask timeo or david!!!)
     pthread_mutex_init(&env.sim_mutex, NULL);
     pthread_mutex_init(&env.print_mutex, NULL);
     return env;
@@ -45,23 +44,18 @@ bool	init_philosophers(t_env *env)
 
 	env->philosophers = malloc(sizeof(t_philo) * env->number_of_philosophers);
 	if (!env->philosophers)
-	return (false);
-	i = -1;
-	while (++i < env->number_of_philosophers)
+		return (false);
+	i = 0;
+	while (i < env->number_of_philosophers)
 	{
 		env->philosophers[i].env_data = env;
 		env->philosophers[i].id = i + 1;
 		env->philosophers[i].meals_count = 0;
-		env->philosophers[i].current_state = THINK;
-		env->philosophers[i].last_eat_time = 0;
+		env->philosophers[i].current_state = 0;
 		env->philosophers[i].self_death_time = env->time_to_die;
-		env->philosophers[i].is_eating = false;
-		//not sure if i need to secure mutexes initialization (ask timeo or david!!!)
-		if (pthread_mutex_init(&env->philosophers[i].mutex, NULL) != 0)
-		{
-			printf("Philosopher %d mutex init failed\n", env->philosophers[i].id);
-			return (false);
-		}
+		env->philosophers[i].eating = false;
+		pthread_mutex_init(&env->philosophers[i].mutex, NULL);
+		i++;
 	}
 	return true;
 }
@@ -100,8 +94,8 @@ bool	init_threads(t_env *env)
 	int i;
 	pthread_t monitor_thread;
 	
-	env->thread = malloc(sizeof(pthread_t) * env->number_of_philosophers);
-	if (!env->thread)
+	env->threads = malloc(sizeof(pthread_t) * env->number_of_philosophers);
+	if (!env->threads)
 		return (false);
 	env->start_time = get_current_time(env);
 	if (pthread_create(&monitor_thread, NULL, &monitor_routine, env) != 0)
@@ -109,27 +103,27 @@ bool	init_threads(t_env *env)
 	i = -1;
 	while (++i < env->number_of_philosophers)
 	{
-		if (pthread_create(&env->thread[i], NULL, &philo_routine, &env->philosophers[i]) != 0)
+		if (pthread_create(&env->threads[i], NULL, &philo_routine, &env->philosophers[i]) != 0)
 			return (error_exit(ERR_TIME, env));
 		precise_usleep(10);
 	}
 	i = -1;
 	while (++i < env->number_of_philosophers)
 	{
-		if (pthread_join(env->thread[i], NULL) != 0)
+		if (pthread_join(env->threads[i], NULL) != 0)
 			return (false);
 	}
 	return (true);
 }
 
-int init_all(char **av, int ac, t_env *env)
+bool init_all(char **av, int ac, t_env *env)
 {
 	*env = init_env(av, ac);
+	if (!validate_input(env, av, ac))
+		return (false);
 	if (!init_philosophers(env))
-		return (1);
+		return (false);
 	if (!init_forks(env))
-		return (1);
-	if (!init_threads(env))
-		return (1);
-	return (0);
+		return (false);
+	return (true);
 }

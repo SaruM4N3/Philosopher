@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 17:43:47 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/26 17:38:42 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	destroy_and_free(t_env *env)
 	pthread_mutex_destroy(&env->print_mutex);
 	free(env->forks);
 	free(env->philosophers);
-	free(env->thread);
+	free(env->threads);
 }
 
 static bool	parse_args(int ac)
@@ -43,19 +43,17 @@ static bool	parse_args(int ac)
 
 int	main(int ac, char **av)
 {
-	t_env	env = {0};
+	t_env	env;
 
 	if (!parse_args(ac))
 		return (1);
-	if (!validate_input(&env, av))
-		return (1);	
 	if (!init_all(av, ac, &env))
 	{
-		print_custom_error(ERR_ARG);
 		destroy_and_free(&env);
 		return (1);
 	}
-	
+	if (!init_threads(&env))
+		return (1);
 	destroy_and_free(&env);
 	return (0);
 }

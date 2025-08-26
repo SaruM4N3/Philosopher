@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 18:52:21 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 16:05:52 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/26 17:20:51 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ void	*print_test(void *philo)
 	
 	curphilo = (t_philo *)philo;
 	printf("\n%sphilosopher number %d stats:\n", YELLOW, curphilo->id);
-	printf("\n%sthread number: %s%ld\n", RESET, CYAN, curphilo->thread);
+	printf("\n%sthread number: %s%ld\n", RESET, CYAN, curphilo->philo_thread);
 	printf("%sID: %s%d%s\n", RESET, GREEN, curphilo->id, RESET);
 	printf("%smeals_eaten: %s%d%s\n", RESET, GREEN, curphilo->meals_count, RESET);
-	printf("%slast_eat_time: %s%d%s\n", RESET, GREEN, curphilo->last_eat_time, RESET);
 	printf("%sleft_fork.id: %s%d%s\n", RESET, GREEN, curphilo->left_fork->id, RESET);
 	printf("%sright_fork.id: %s%d%s\n", RESET, GREEN, curphilo->right_fork->id, RESET);
 	usleep(150);
