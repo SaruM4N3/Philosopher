@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/26 17:36:01 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/27 02:46:04 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@ t_env init_env(char **av, int ac)
 
 	env.start_time = 0;
 	env.dead = false;
+	env.start_sim = false;
 	env.finished = false;
 	
 	env.philosophers = NULL;
 	env.forks = NULL;
     pthread_mutex_init(&env.sim_mutex, NULL);
+    pthread_mutex_init(&env.start_mutex, NULL);
     pthread_mutex_init(&env.print_mutex, NULL);
     return env;
 }
@@ -53,6 +55,7 @@ bool	init_philosophers(t_env *env)
 		env->philosophers[i].meals_count = 0;
 		env->philosophers[i].current_state = 0;
 		env->philosophers[i].self_death_time = env->time_to_die;
+		env->philosophers[i].started = false;
 		env->philosophers[i].eating = false;
 		pthread_mutex_init(&env->philosophers[i].mutex, NULL);
 		i++;
@@ -64,18 +67,15 @@ bool	init_forks(t_env *env)
 {
 	int i;
 
-	env->forks = malloc(sizeof(pthread_mutex_t) * env->number_of_philosophers);
+	env->forks = malloc(sizeof(t_fork) * env->number_of_philosophers);
 	if (!env->forks)
 		return (false);
 	i = -1;
 	while (++i < env->number_of_philosophers)
 	{
-		env->forks->id = i;
-		if (pthread_mutex_init(&env->forks->mutex, NULL) != 0)
-		{
-			printf("Fork %d init failed\n", env->forks->id);
-			return (false);
-		}
+		env->forks[i].id = i;
+		env->forks[i].is_available = true;
+		pthread_mutex_init(&env->forks[i].mutex, NULL);
 	}
 	i = -1;
 	while (++i < env->number_of_philosophers)
@@ -105,7 +105,6 @@ bool	init_threads(t_env *env)
 	{
 		if (pthread_create(&env->threads[i], NULL, &philo_routine, &env->philosophers[i]) != 0)
 			return (error_exit(ERR_TIME, env));
-		precise_usleep(10);
 	}
 	i = -1;
 	while (++i < env->number_of_philosophers)

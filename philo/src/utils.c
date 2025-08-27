@@ -6,13 +6,14 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:11:38 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 15:03:56 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/27 02:48:12 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <limits.h>
 #include <stddef.h>
+#include "../includes/philo.h"
 
 static void	ft_check_sign(const char *str, size_t *i, int *sign)
 {
@@ -57,11 +58,21 @@ int	ft_atoi(const char *str)
 	return (num * sign);
 }
 
-int		ft_strlen(char *str)
+void print_action(t_philo *philo, int action)
 {
-	int len;
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
+	pthread_mutex_lock(&philo->env_data->print_mutex);
+	printf("%lld ", timestamp_in_ms());
+	if(action == FORK)
+		printf("%d has taken a fork\n", philo->id);
+	else if(action == EAT)
+		printf("%d is eating\n", philo->id);
+	else if(action == SLEEP)
+		printf("%d is sleeping\n", philo->id);
+	else if(action == THINK)
+		printf("%d is thinking\n", philo->id);
+	else if (action == DEAD)
+		printf("%d is dead\n", philo->id);
+	else
+		printf("ERROR: UNKNOW ACTION");
+	pthread_mutex_unlock(&philo->env_data->print_mutex);
 }

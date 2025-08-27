@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/26 17:36:19 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/08/27 03:17:20 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 typedef struct s_fork
 {
 	int				id;
+	bool			is_available;
 	pthread_mutex_t	mutex;
 }					t_fork;
 
@@ -41,8 +42,9 @@ typedef struct s_philo
 	int				id;
 	int				meals_count;
 	int				current_state;
+	bool			started;
 	bool			eating;
-	unsigned int	self_death_time;
+	long long		self_death_time;
 
 	pthread_mutex_t	mutex;
 	t_fork			*right_fork;
@@ -57,6 +59,7 @@ typedef struct s_env
 	int				number_of_times_each_philosopher_must_eat;
 	int				dead;
 	int 			finished;
+	bool 			start_sim;
 	
 	unsigned int	time_to_die;
 	unsigned int	time_to_eat;
@@ -66,17 +69,12 @@ typedef struct s_env
 	t_philo			*philosophers;
 	t_fork			*forks;
 	pthread_mutex_t	sim_mutex;
+	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	start_mutex;
 	pthread_mutex_t print_mutex;
 }					t_env;
 
-
-
 // FUNCTIONS
-
-//display.c
-void				print_action(t_philo *philo, int action);
-void				*print_test(void *philo);
-void				*print_test_first_philo(void *philo);
 
 //init.c
 t_env				init_env(char **av, int ac);
@@ -88,21 +86,21 @@ bool				init_all(char **av, int ac, t_env *env);
 //monitor.c
 void				*monitor_routine(void *env_ptr);
 void				*monitor_checker(void *philo_ptr);
-void				*philo_routine(void *philo_ptr);
 
 //philo.c
 void				grab_forks(t_philo *philo);
 void				release_forks(t_philo *philo);
 void				philo_eat(t_philo *philo);
+void				*philo_routine(void *philo_ptr);
 
 //utils.c
 int					ft_atoi(const char *str);
-int					ft_strlen(char *str);
+void				print_action(t_philo *philo, int action);
 
 //utils2.c
 long long			timestamp_in_ms(void);
 long long			get_current_time(t_env *env_data);
-void				precise_usleep(unsigned int milliseconds);
+int					ft_wait(unsigned int milliseconds);
 bool				validate_input(t_env *env_data, char **av, int ac);
 
 #endif
