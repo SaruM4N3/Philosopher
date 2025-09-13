@@ -6,14 +6,14 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:11:38 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/13 01:37:48 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/13 18:51:27 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "../includes/philo.h"
 #include <limits.h>
 #include <stddef.h>
-#include "../includes/philo.h"
+#include <unistd.h>
 
 static void	ft_check_sign(const char *str, size_t *i, int *sign)
 {
@@ -58,23 +58,24 @@ int	ft_atoi(const char *str)
 	return (num * sign);
 }
 
-void print_action(t_philo *philo, int action)
+void	print_action(t_philo *philo, int action)
 {
 	pthread_mutex_lock(&philo->env_data->print_mutex);
-	printf("%lld ", timestamp_in_ms());
-	printf("%lld ", philo->env_data->start_time);
-	printf("%lld ", get_current_time(philo->env_data));
-	if(action == FORK)
-		printf("%d has taken a fork\n", philo->id);
-	else if(action == EAT)
-		printf("%d is eating\n", philo->id);
-	else if(action == SLEEP)
-		printf("%d is sleeping\n", philo->id);
-	else if(action == THINK)
-		printf("%d is thinking\n", philo->id);
-	else if (action == DEAD)
-		printf("%d is dead\n", philo->id);
-	else
-		printf("ERROR: UNKNOW ACTION");
+	if (philo->env_data->state == running)
+	{
+		printf("%ld ", get_current_time(philo->env_data));
+		if (action == FORK)
+			printf("%d has taken a fork\n", philo->id);
+		else if (action == EAT)
+			printf("%d is eating\n", philo->id);
+		else if (action == SLEEP)
+			printf("%d is sleeping\n", philo->id);
+		else if (action == THINK)
+			printf("%d is thinking\n", philo->id);
+		else if (action == DEAD)
+			printf("%d is dead\n", philo->id);
+		else
+			printf("ERROR: UNKNOW ACTION");
+	}
 	pthread_mutex_unlock(&philo->env_data->print_mutex);
 }

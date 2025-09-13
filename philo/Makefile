@@ -6,7 +6,7 @@
 #    By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/08/26 21:22:10 by zsonie           ###   ########lyon.fr    #
+#    Updated: 2025/09/13 18:12:34 by zsonie           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ INC = -I includes
 SRCDIR = src
 OBJDIR = obj
 
-SRCS = src/error.c\
+SRCS = src/action.c\
+		src/error.c\
 		src/init.c\
 		src/main.c\
 		src/philo.c\
@@ -53,7 +54,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re debug
 
 .DEFAULT_GOAL = all
 # COLORS

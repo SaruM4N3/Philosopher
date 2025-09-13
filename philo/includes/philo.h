@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/13 01:55:16 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/13 18:40:51 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@ typedef struct s_philo
 
 	int				id;
 	int				meals_count;
-	int				current_state;
+	enum			philo_state
+	{
+		alive,
+		dead
+	}				philo_state;
+	
 	bool			started;
 	bool			eating;
 	time_t			self_death_time;
@@ -82,6 +87,12 @@ typedef struct s_env
 
 // FUNCTIONS
 
+// action.c
+void				grab_forks(t_philo *philo);
+void				release_forks(t_philo *philo);
+void				philo_eat(t_philo *philo);
+void				philo_sleep(t_philo *philo);
+
 // init.c
 t_env				init_env(char **av, int ac);
 bool				init_philosophers(t_env *env);
@@ -94,9 +105,6 @@ void				*monitor_routine(void *env_ptr);
 void				*monitor_checker(void *philo_ptr);
 
 // philo.c
-void				grab_forks(t_philo *philo);
-void				release_forks(t_philo *philo);
-void				philo_eat(t_philo *philo);
 void				*philo_routine(void *philo_ptr);
 
 // utils.c
