@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/27 02:46:04 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/13 02:11:58 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_env init_env(char **av, int ac)
     
 	env.threads = NULL;
     env.number_of_philosophers = ft_atoi(av[1]);
+	env.finished = 0;
     env.time_to_die = ft_atoi(av[2]);
     env.time_to_eat = ft_atoi(av[3]);
     env.time_to_sleep = ft_atoi(av[4]);
@@ -28,9 +29,7 @@ t_env init_env(char **av, int ac)
 		env.number_of_times_each_philosopher_must_eat = -1;
 
 	env.start_time = 0;
-	env.dead = false;
-	env.start_sim = false;
-	env.finished = false;
+	env.state = starting;
 	
 	env.philosophers = NULL;
 	env.forks = NULL;
@@ -97,7 +96,8 @@ bool	init_threads(t_env *env)
 	env->threads = malloc(sizeof(pthread_t) * env->number_of_philosophers);
 	if (!env->threads)
 		return (false);
-	env->start_time = get_current_time(env);
+	env->start_time = timestamp_in_ms();
+	printf("%p FEUR\n", env);
 	if (pthread_create(&monitor_thread, NULL, &monitor_routine, env) != 0)
 		return (false);
 	i = -1;
@@ -118,6 +118,9 @@ bool	init_threads(t_env *env)
 bool init_all(char **av, int ac, t_env *env)
 {
 	*env = init_env(av, ac);
+	printf("%ld 1\n", env->time_to_die);
+	printf("%ld 2\n", env->time_to_eat);
+	printf("%ld 3\n", env->time_to_sleep);
 	if (!validate_input(env, av, ac))
 		return (false);
 	if (!init_philosophers(env))

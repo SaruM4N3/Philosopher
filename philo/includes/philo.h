@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/27 03:17:20 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/13 01:55:16 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 # define EAT 4201
 # define FORK 4202
@@ -26,7 +26,7 @@
 # define THINK 4204
 # define DEAD 4205
 
-//STRUCTS
+// STRUCTS
 typedef struct s_fork
 {
 	int				id;
@@ -44,7 +44,7 @@ typedef struct s_philo
 	int				current_state;
 	bool			started;
 	bool			eating;
-	long long		self_death_time;
+	time_t			self_death_time;
 
 	pthread_mutex_t	mutex;
 	t_fork			*right_fork;
@@ -57,49 +57,55 @@ typedef struct s_env
 
 	int				number_of_philosophers;
 	int				number_of_times_each_philosopher_must_eat;
-	int				dead;
-	int 			finished;
-	bool 			start_sim;
+	int				finished;
 	
-	unsigned int	time_to_die;
-	unsigned int	time_to_eat;
-	unsigned int	time_to_sleep;
-	unsigned int	start_time;
-	
+	enum			state
+	{
+		starting,
+		running,
+		stoping,
+		stoped
+	}				state;
+
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	time_t			start_time;
+
 	t_philo			*philosophers;
 	t_fork			*forks;
 	pthread_mutex_t	sim_mutex;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	start_mutex;
-	pthread_mutex_t print_mutex;
+	pthread_mutex_t	print_mutex;
 }					t_env;
 
 // FUNCTIONS
 
-//init.c
+// init.c
 t_env				init_env(char **av, int ac);
 bool				init_philosophers(t_env *env);
 bool				init_forks(t_env *env);
 bool				init_threads(t_env *env);
 bool				init_all(char **av, int ac, t_env *env);
 
-//monitor.c
+// monitor.c
 void				*monitor_routine(void *env_ptr);
 void				*monitor_checker(void *philo_ptr);
 
-//philo.c
+// philo.c
 void				grab_forks(t_philo *philo);
 void				release_forks(t_philo *philo);
 void				philo_eat(t_philo *philo);
 void				*philo_routine(void *philo_ptr);
 
-//utils.c
+// utils.c
 int					ft_atoi(const char *str);
 void				print_action(t_philo *philo, int action);
 
-//utils2.c
-long long			timestamp_in_ms(void);
-long long			get_current_time(t_env *env_data);
+// utils2.c
+time_t				timestamp_in_ms(void);
+time_t				get_current_time(t_env *env_data);
 int					ft_wait(unsigned int milliseconds);
 bool				validate_input(t_env *env_data, char **av, int ac);
 

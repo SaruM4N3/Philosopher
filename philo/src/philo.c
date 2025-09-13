@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:28 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/27 03:24:30 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/13 01:16:02 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	philo_eat(t_philo *philo)
 	grab_forks(philo);
 	pthread_mutex_lock(&philo->mutex);
 	philo->eating = true;
-	philo->self_death_time = timestamp_in_ms() + philo->env_data->time_to_die;
+	philo->self_death_time = get_current_time(philo->env_data) + philo->env_data->time_to_die;
 	print_action(philo, EAT);
 	philo->meals_count++;
 	ft_wait(philo->env_data->time_to_eat);
@@ -78,9 +78,9 @@ void	*philo_routine(void *philo_ptr)
 
 	philo = (t_philo *)philo_ptr;
 	philo->started = true;
-	while (!philo->env_data->start_sim)
+	while (philo->env_data->state == starting)
 		usleep(1);
-	while (philo->env_data->dead == false)
+	while (philo->env_data->state == running)
 	{
 		if (philo->id % 2 == 0)
 		{

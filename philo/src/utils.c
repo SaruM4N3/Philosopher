@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:11:38 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/27 02:48:12 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/13 01:37:48 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void print_action(t_philo *philo, int action)
 {
 	pthread_mutex_lock(&philo->env_data->print_mutex);
 	printf("%lld ", timestamp_in_ms());
+	printf("%lld ", philo->env_data->start_time);
+	printf("%lld ", get_current_time(philo->env_data));
 	if(action == FORK)
 		printf("%d has taken a fork\n", philo->id);
 	else if(action == EAT)
