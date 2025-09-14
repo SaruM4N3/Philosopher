@@ -6,12 +6,12 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:06:52 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 17:39:49 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/14 03:01:29 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
-#include "../includes/error.h"
+#include "error.h"
+#include "philo.h"
 
 void	print_custom_error(int err)
 {
@@ -43,13 +43,13 @@ char	*print_bool(bool b)
 		return ("false");
 }
 
-//message exemple "%sphilo is_eating: %s%s%s\n"
-void    print_custom_bool(char *message, bool b)
+// message exemple "%sphilo is_eating: %s%s%s\n"
+void	print_custom_bool(char *message, bool b)
 {
 	printf(message, RESET, colored_bool(b), print_bool(b), RESET);
 }
 
-int error_exit(int err, t_env *env)
+int	error_exit(int err, t_env *env)
 {
 	print_custom_error(err);
 	if (env)

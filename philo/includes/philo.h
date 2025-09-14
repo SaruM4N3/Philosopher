@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/13 18:40:51 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/14 03:01:33 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ typedef struct s_philo
 	{
 		alive,
 		dead
-	}				philo_state;
-	
+	} philo_state;
+
 	bool			started;
 	bool			eating;
 	time_t			self_death_time;
@@ -63,14 +63,14 @@ typedef struct s_env
 	int				number_of_philosophers;
 	int				number_of_times_each_philosopher_must_eat;
 	int				finished;
-	
+
 	enum			state
 	{
 		starting,
 		running,
 		stoping,
 		stoped
-	}				state;
+	} state;
 
 	time_t			time_to_die;
 	time_t			time_to_eat;
@@ -81,17 +81,16 @@ typedef struct s_env
 	t_fork			*forks;
 	pthread_mutex_t	sim_mutex;
 	pthread_mutex_t	dead_mutex;
-	pthread_mutex_t	start_mutex;
+	pthread_mutex_t	state_mutex;
 	pthread_mutex_t	print_mutex;
 }					t_env;
 
 // FUNCTIONS
 
 // action.c
-void				grab_forks(t_philo *philo);
-void				release_forks(t_philo *philo);
-void				philo_eat(t_philo *philo);
-void				philo_sleep(t_philo *philo);
+void				*philo_eat(t_philo *philo);
+void				*philo_sleep(t_philo *philo);
+void				*philo_death_check(void *philo_ptr);
 
 // init.c
 t_env				init_env(char **av, int ac);
@@ -99,6 +98,10 @@ bool				init_philosophers(t_env *env);
 bool				init_forks(t_env *env);
 bool				init_threads(t_env *env);
 bool				init_all(char **av, int ac, t_env *env);
+
+// fork.c
+void				*grab_forks(t_philo *philo);
+void				release_forks(t_philo *philo);
 
 // monitor.c
 void				*monitor_routine(void *env_ptr);

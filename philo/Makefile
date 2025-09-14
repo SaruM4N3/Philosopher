@@ -6,11 +6,11 @@
 #    By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/09/13 18:12:34 by zsonie           ###   ########lyon.fr    #
+#    Updated: 2025/09/14 02:53:09 by zsonie           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philosopher
+NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
@@ -21,6 +21,7 @@ OBJDIR = obj
 
 SRCS = src/action.c\
 		src/error.c\
+		src/fork.c\
 		src/init.c\
 		src/main.c\
 		src/philo.c\
@@ -33,23 +34,23 @@ OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	@echo "$(GREEN)Making executable$(RESET)"
+	@printf "$(GREEN)Making executable$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC) $(OBJS) $(LIB) -o $(NAME) 
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR) 
-	@echo "$(YELLOW)Converting $(GREEN)$< $(YELLOW)to $(GREEN)$@$(RESET)"
+	@printf "$(YELLOW)Converting $(GREEN)$< $(YELLOW)to $(GREEN)$@$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)/src
 
 clean:
-	@echo "$(RED)Cleaning $(GREEN)$(OBJDIR) $(RED)dir"
+	@printf "$(RED)Cleaning $(GREEN)$(OBJDIR) $(RED)dir\n"
 	@$(RM) $(OBJS)
 	@$(RM) -r $(OBJDIR)
 
 fclean: clean
-	@echo "$(RED)Full clean"
+	@printf "$(RED)Full clean\n"
 	@$(RM) $(NAME)
 
 re: fclean all

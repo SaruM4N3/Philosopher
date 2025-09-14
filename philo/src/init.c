@@ -6,12 +6,12 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/13 18:41:25 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/14 02:58:13 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
-#include "../includes/error.h"
+#include "philo.h"
+#include "error.h"
 
 t_env init_env(char **av, int ac)
 {
@@ -34,7 +34,8 @@ t_env init_env(char **av, int ac)
 	env.philosophers = NULL;
 	env.forks = NULL;
     pthread_mutex_init(&env.sim_mutex, NULL);
-    pthread_mutex_init(&env.start_mutex, NULL);
+    pthread_mutex_init(&env.state_mutex, NULL);
+    pthread_mutex_init(&env.dead_mutex, NULL);
     pthread_mutex_init(&env.print_mutex, NULL);
     return env;
 }
@@ -98,7 +99,7 @@ bool	init_threads(t_env *env)
 		return (false);
 	env->start_time = timestamp_in_ms();
 	if (pthread_create(&monitor_thread, NULL, &monitor_routine, env) != 0)
-		return (false);
+		return (error_exit(ERR_TIME, env));
 	i = -1;
 	while (++i < env->number_of_philosophers)
 	{
@@ -106,10 +107,12 @@ bool	init_threads(t_env *env)
 			return (error_exit(ERR_TIME, env));
 	}
 	i = -1;
+	if (pthread_join(monitor_thread, NULL) != 0)
+		return (error_exit(ERR_TIME, env));
 	while (++i < env->number_of_philosophers)
 	{
 		if (pthread_join(env->threads[i], NULL) != 0)
-			return (false);
+			return (error_exit(ERR_TIME, env));
 	}
 	return (true);
 }
@@ -117,9 +120,6 @@ bool	init_threads(t_env *env)
 bool init_all(char **av, int ac, t_env *env)
 {
 	*env = init_env(av, ac);
-	// printf("%ld 1\n", env->time_to_die);
-	// printf("%ld 2\n", env->time_to_eat);
-	// printf("%ld 3\n", env->time_to_sleep);
 	if (!validate_input(env, av, ac))
 		return (false);
 	if (!init_philosophers(env))

@@ -6,12 +6,12 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/27 01:52:31 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/14 03:01:40 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
-#include "../includes/error.h"
+#include "error.h"
+#include "philo.h"
 
 void	destroy_and_free(t_env *env)
 {
@@ -25,6 +25,8 @@ void	destroy_and_free(t_env *env)
 		i++;
 	}
 	pthread_mutex_destroy(&env->sim_mutex);
+	pthread_mutex_destroy(&env->state_mutex);
+	pthread_mutex_destroy(&env->dead_mutex);
 	pthread_mutex_destroy(&env->print_mutex);
 	free(env->forks);
 	free(env->philosophers);
@@ -53,7 +55,10 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	if (!init_threads(&env))
+	{
+		destroy_and_free(&env);
 		return (1);
+	}
 	destroy_and_free(&env);
 	return (0);
 }
