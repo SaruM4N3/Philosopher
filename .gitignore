@@ -1,5 +1,5 @@
 subject
-philo/obj
+philo/obj/*
 philo/philo
-philo/.vscode
-.vscode
+philo/.vscode/*
+.vscode/*
