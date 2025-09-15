@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 02:49:15 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/14 03:00:02 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/14 19:55:14 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	*grab_forks(t_philo *philo)
 		if (philo_death_check(philo) == ERR_PTR)
 			return (ERR_PTR);
 		l_fork_grabed = check_left_fork(philo, l_fork_grabed);
-		usleep(10);
+		usleep(100);
 	}
 	return (NULL);
 }
@@ -66,9 +66,10 @@ void	*grab_forks(t_philo *philo)
 void	release_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->right_fork->mutex);
-	philo->left_fork->is_available = true;
-	pthread_mutex_unlock(&philo->right_fork->mutex);
-	pthread_mutex_lock(&philo->left_fork->mutex);
 	philo->right_fork->is_available = true;
+	pthread_mutex_unlock(&philo->right_fork->mutex);
+	
+	pthread_mutex_lock(&philo->left_fork->mutex);
+	philo->left_fork->is_available = true;
 	pthread_mutex_unlock(&philo->left_fork->mutex);
 }

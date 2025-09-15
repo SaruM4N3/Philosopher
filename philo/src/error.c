@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:06:52 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/14 03:01:29 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/14 22:51:46 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,6 @@ void	print_custom_error(int err)
 	}
 	else
 		printf(ERR_MESSAGE "%sUnknown error\n%s", RED, RESET);
-}
-
-char	*colored_bool(bool b)
-{
-	if (!b)
-		return (RED);
-	else
-		return (GREEN);
-}
-
-char	*print_bool(bool b)
-{
-	if (b == 1)
-		return ("true");
-	else
-		return ("false");
-}
-
-// message exemple "%sphilo is_eating: %s%s%s\n"
-void	print_custom_bool(char *message, bool b)
-{
-	printf(message, RESET, colored_bool(b), print_bool(b), RESET);
 }
 
 int	error_exit(int err, t_env *env)

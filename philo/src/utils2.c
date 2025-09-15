@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:21:57 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/14 03:00:16 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/15 00:13:30 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,15 @@ int	ft_wait(unsigned int milliseconds)
 	return (0);
 }
 
-bool	validate_input(t_env *env_data, char **av, int ac)
+bool	validate_input(t_env *env_data, int ac)
 {
-	(void)av;
-	if (env_data->number_of_philosophers <= 0 || env_data->time_to_die <= 0
+	if (env_data->nb_philo <= 0 || env_data->time_to_die <= 0
 		|| env_data->time_to_eat <= 0 || env_data->time_to_sleep <= 0)
 	{
 		print_custom_error(ERR_ARG);
 		return (false);
 	}
-	if (ac == 6 && env_data->number_of_times_each_philosopher_must_eat < 0)
+	if (ac == 6 && env_data->nb_must_eat < 0)
 	{
 		print_custom_error(ERR_ARG);
 		return (false);

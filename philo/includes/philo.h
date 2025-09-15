@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/14 03:01:33 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/15 01:34:14 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,18 @@ typedef struct s_philo
 	int				meals_count;
 	enum			philo_state
 	{
+		start,
+		ready,
 		alive,
 		dead
 	} philo_state;
 
-	bool			started;
 	bool			eating;
 	time_t			self_death_time;
 
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	philo_state_mutex;
+	pthread_mutex_t	philo_eating_mutex;
 	t_fork			*right_fork;
 	t_fork			*left_fork;
 }					t_philo;
@@ -60,9 +63,11 @@ typedef struct s_env
 {
 	pthread_t		*threads;
 
-	int				number_of_philosophers;
-	int				number_of_times_each_philosopher_must_eat;
+	int				nb_philo;
+	int				nb_must_eat;
 	int				finished;
+	int				can_print;
+	bool			death_printed;
 
 	enum			state
 	{
@@ -79,8 +84,8 @@ typedef struct s_env
 
 	t_philo			*philosophers;
 	t_fork			*forks;
-	pthread_mutex_t	sim_mutex;
-	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t death_printed_mutex;
+	pthread_mutex_t	finished_mutex;
 	pthread_mutex_t	state_mutex;
 	pthread_mutex_t	print_mutex;
 }					t_env;
@@ -108,6 +113,7 @@ void				*monitor_routine(void *env_ptr);
 void				*monitor_checker(void *philo_ptr);
 
 // philo.c
+int					check_env_state(t_env *env);
 void				*philo_routine(void *philo_ptr);
 
 // utils.c
@@ -118,6 +124,6 @@ void				print_action(t_philo *philo, int action);
 time_t				timestamp_in_ms(void);
 time_t				get_current_time(t_env *env_data);
 int					ft_wait(unsigned int milliseconds);
-bool				validate_input(t_env *env_data, char **av, int ac);
+bool				validate_input(t_env *env_data, int ac);
 
 #endif

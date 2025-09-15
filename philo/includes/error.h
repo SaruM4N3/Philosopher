@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:11:22 by zsonie            #+#    #+#             */
-/*   Updated: 2025/08/25 17:41:34 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/14 22:51:57 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,15 @@
 //Messages
 # define ERR_MESSAGE "ERROR :\t"
 # define ERR_TIME_MESSAGE "%sGettimeofday error occured\n%s"
-# define ARG_MESSAGE "%sWrong nbr of arguments...\n\n\
+# define ARG_MESSAGE "%sWrong arguments or nbr of arguments...\n\n\
 %sPls procced as follow:\n%s./philosopher \
-number_of_philosophers \
+nb_philo \
 time_to_die time_to_eat \
 time_to_sleep \
-[number_of_times_each_philosopher_must_eat]\n%s"
+[nb_must_eat]\n%s"
 
 //Functions
 void	print_custom_error(int err);
-void	print_custom_bool(char *message, bool b);
-char	*colored_bool(bool b);
-char	*print_bool(bool b);
 int		error_exit(int err, t_env *env);
 void    destroy_and_free(t_env *env);
 

@@ -6,22 +6,20 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:28 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/14 03:00:16 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/15 02:04:57 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
 #include "error.h"
+#include "philo.h"
 
-static int	philo_check_env_state(void *philo_ptr)
+int	check_env_state(t_env *env)
 {
-	t_philo	*philo;
 	int		state_stamp;
 
-	philo = (t_philo *)philo_ptr;
-	pthread_mutex_lock(&philo->env_data->state_mutex);
-	state_stamp = philo->env_data->state;
-	pthread_mutex_unlock(&philo->env_data->state_mutex);
+	pthread_mutex_lock(&env->state_mutex);
+	state_stamp = env->state;
+	pthread_mutex_unlock(&env->state_mutex);
 	return (state_stamp);
 }
 
@@ -32,31 +30,31 @@ void	*philo_death_check(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	if (get_current_time(philo->env_data) >= philo->self_death_time)
 	{
+		pthread_mutex_lock(&philo->philo_state_mutex);
 		philo->philo_state = dead;
+		pthread_mutex_unlock(&philo->philo_state_mutex);
+		
 		print_action(philo, DEAD);
 		pthread_mutex_lock(&philo->env_data->state_mutex);
 		philo->env_data->state = stoping;
 		pthread_mutex_unlock(&philo->env_data->state_mutex);
+
 		return (ERR_PTR);
 	}
 	return (NULL);
 }
 
-static void	philo_wait_start(void *philo_ptr)
+static void	philo_wait_start(t_philo *philo)
 {
-	t_philo	*philo;
-	int		cur_state;
-
-	philo = (t_philo *)philo_ptr;
-	pthread_mutex_lock(&philo->mutex);
-	philo->started = true;
-	pthread_mutex_unlock(&philo->mutex);
-	cur_state = philo_check_env_state(philo);
-	while (cur_state == starting)
-	{
-		cur_state = philo_check_env_state(philo);
-		usleep(1);
-	}
+	pthread_mutex_lock(&philo->philo_state_mutex);
+	philo->philo_state = ready;
+	pthread_mutex_unlock(&philo->philo_state_mutex);
+	
+	while (check_env_state(philo->env_data) == starting)
+		usleep(100);
+	pthread_mutex_lock(&philo->philo_state_mutex);
+	philo->philo_state = alive;
+	pthread_mutex_unlock(&philo->philo_state_mutex);
 }
 
 static void	*even_routine(void *philo_ptr)
@@ -64,7 +62,11 @@ static void	*even_routine(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
+	if (philo_death_check(philo) == ERR_PTR)
+		return (ERR_PTR);
 	if (philo_eat(philo) == ERR_PTR)
+		return (ERR_PTR);
+	if (philo_death_check(philo) == ERR_PTR)
 		return (ERR_PTR);
 	if (philo_sleep(philo) == ERR_PTR)
 		return (ERR_PTR);
@@ -74,29 +76,41 @@ static void	*even_routine(void *philo_ptr)
 	return (NULL);
 }
 
-void	*philo_routine(void *philo_ptr)
+static void	*odd_routine(void *philo_ptr)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
+	if (philo_death_check(philo) == ERR_PTR)
+		return (ERR_PTR);
+	if (philo_sleep(philo) == ERR_PTR)
+		return (ERR_PTR);
+	if (philo_death_check(philo) == ERR_PTR)
+		return (ERR_PTR);
+	print_action(philo, THINK);
+	if (philo_death_check(philo) == ERR_PTR)
+		return (ERR_PTR);
+	if (philo_eat(philo) == ERR_PTR)
+		return (ERR_PTR);
+	return (NULL);
+}
+
+void	*philo_routine(void *philo_ptr)
+{
+	t_philo	*philo;
+	
+	philo = (t_philo *)philo_ptr;
 	philo_wait_start(philo);
-	while (philo->env_data->state == running)
+	while (check_env_state(philo->env_data) == running)
 	{
-		if (philo_death_check(philo) == ERR_PTR)
-			return (ERR_PTR);
 		if (philo->id % 2 == 0)
 		{
 			if (even_routine(philo) == ERR_PTR)
-				return (NULL);
+				return (ERR_PTR);
 		}
 		else
 		{
-			if (philo_sleep(philo) == ERR_PTR)
-				return (ERR_PTR);
-			if (philo_death_check(philo) == ERR_PTR)
-				return (ERR_PTR);
-			print_action(philo, THINK);
-			if (philo_eat(philo) == ERR_PTR)
+			if (odd_routine(philo) == ERR_PTR)
 				return (ERR_PTR);
 		}
 	}
