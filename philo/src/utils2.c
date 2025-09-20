@@ -6,12 +6,13 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:21:57 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 01:09:22 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 00:00:47 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "error.h"
 #include "philo.h"
+#include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -38,4 +39,32 @@ int	ft_wait(unsigned int milliseconds, t_philo *philo)
 		&& philo_death_check(philo) != ERR_PTR)
 		usleep(100);
 	return (0);
+}
+
+static void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = c;
+		i++;
+	}
+	return (s);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	size_t	total;
+	void	*res;
+
+	total = nmemb * size;
+	if (size != 0 && total / size != nmemb)
+		return (malloc(0));
+	res = malloc(total);
+	if (!res)
+		return (NULL);
+	ft_memset(res, 0, total);
+	return (res);
 }

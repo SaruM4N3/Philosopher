@@ -6,16 +6,16 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 23:52:18 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 23:59:29 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <pthread.h>
 # include <stdbool.h>
 # include <sys/time.h>
-# include <pthread.h>
 
 # define EAT 4201
 # define FORK 4202
@@ -23,7 +23,7 @@
 # define THINK 4204
 # define DEAD 4205
 
-enum			e_env_state
+enum				e_env_state
 {
 	starting,
 	running,
@@ -116,5 +116,6 @@ void				print_action(t_philo *philo, int action);
 time_t				timestamp_in_ms(void);
 time_t				get_current_time(t_env *env_data);
 int					ft_wait(unsigned int milliseconds, t_philo *philo);
+void				*ft_calloc(size_t nmemb, size_t size);
 
 #endif

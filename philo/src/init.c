@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 23:36:03 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 00:10:20 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	init_philosophers(t_env *env)
 {
 	int	i;
 
-	env->philosophers = calloc(env->nb_philo, sizeof(t_philo));
+	env->philosophers = ft_calloc(env->nb_philo, sizeof(t_philo));
 	if (!env->philosophers)
 		return (false);
 	i = 0;
@@ -65,7 +65,7 @@ bool	init_forks(t_env *env)
 {
 	int	i;
 
-	env->forks = calloc(env->nb_philo, sizeof(t_fork));
+	env->forks = ft_calloc(env->nb_philo, sizeof(t_fork));
 	if (!env->forks)
 		return (false);
 	i = -1;
@@ -96,22 +96,22 @@ bool	init_threads(t_env *env)
 	if (!env->threads)
 		return (false);
 	if (pthread_create(&monitor_thread, NULL, &monitor_routine, env) != 0)
-		return (error_exit(ERR_TIME, env));
+		return (error_exit(ERR_PTHREAD_CREATE, env));
 	env->start_time = timestamp_in_ms();
 	i = -1;
 	while (++i < env->nb_philo)
 	{
 		if (pthread_create(&env->threads[i], NULL, &philo_routine,
 				&env->philosophers[i]) != 0)
-			return (error_exit(ERR_TIME, env));
+			return (error_exit(ERR_PTHREAD_CREATE, env));
 	}
 	i = -1;
 	if (pthread_join(monitor_thread, NULL) != 0)
-		return (error_exit(ERR_TIME, env));
+		return (error_exit(ERR_PTHREAD_JOIN, env));
 	while (++i < env->nb_philo)
 	{
 		if (pthread_join(env->threads[i], NULL) != 0)
-			return (error_exit(ERR_TIME, env));
+			return (error_exit(ERR_PTHREAD_JOIN, env));
 	}
 	return (true);
 }
