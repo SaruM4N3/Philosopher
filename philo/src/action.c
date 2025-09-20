@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 18:07:30 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 01:41:36 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 22:31:49 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ void	*philo_eat(t_philo *philo)
 	print_action(philo, EAT);
 	if (philo->must_eat > 0)
 	{
-		pthread_mutex_lock(&philo->meals_count->mutex);
-		philo->meals_count->value++;
-		pthread_mutex_unlock(&philo->meals_count->mutex);
-		if (get_val_mut(philo->meals_count) >= philo->must_eat)
+		philo->meals_count++;
+		if (philo->meals_count >= philo->must_eat)
 		{
 			pthread_mutex_lock(&philo->env_data->finished->mutex);
 			philo->env_data->finished->value++;

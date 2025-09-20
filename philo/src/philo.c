@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:28 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 01:36:12 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 22:41:32 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	*philo_death_check(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	if (get_current_time(philo->env_data) >= philo->self_death_time)
 	{
-		set_val_mut(philo->state, dead);
 		print_action(philo, DEAD);
 		return (ERR_PTR);
 	}
@@ -30,10 +29,10 @@ void	*philo_death_check(void *philo_ptr)
 
 static void	philo_wait_start(t_philo *philo)
 {
-	set_val_mut(philo->state, ready);
+	set_val_mut(philo->is_ready, false);
 	while (get_val_mut(philo->env_data->state) == starting)
 		usleep(100);
-	set_val_mut(philo->state, alive);
+	set_val_mut(philo->is_ready, true);
 }
 
 static void	*even_routine(void *philo_ptr)
@@ -71,6 +70,8 @@ void	*philo_routine(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
+	if (philo->id == philo->env_data->nb_philo)
+		set_val_mut(philo->env_data->state, running);
 	philo_wait_start(philo);
 	while (get_val_mut(philo->env_data->state) == running)
 	{

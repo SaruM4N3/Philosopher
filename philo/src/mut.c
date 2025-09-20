@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 23:57:50 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 00:56:17 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 22:57:41 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ t_mut	*init_mut(int value)
 	if (!mut)
 		return (NULL);
 	mut->value = value;
-	pthread_mutex_init(&mut->mutex, NULL);
+	if (pthread_mutex_init(&mut->mutex, NULL) != 0)
+	{
+		free(mut);
+		return (NULL);
+	}
 	return (mut);
 }
 

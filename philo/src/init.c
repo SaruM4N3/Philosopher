@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 01:35:49 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 22:51:43 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ bool	init_philosophers(t_env *env)
 		env->philosophers[i].id = i + 1;
 		env->philosophers[i].must_eat = env->nb_must_eat;
 		env->philosophers[i].self_death_time = env->time_to_die;
-		env->philosophers[i].state = init_mut(start);
-		env->philosophers[i].meals_count = init_mut(0);
+		env->philosophers[i].is_ready = init_mut(false);
+		env->philosophers[i].meals_count = 0;
 		i++;
 	}
 	return (true);
@@ -66,10 +66,7 @@ bool	init_forks(t_env *env)
 		return (false);
 	i = -1;
 	while (++i < env->nb_philo)
-	{
-		env->forks[i].id = i;
 		env->forks[i].is_available = init_mut(true);
-	}
 	i = -1;
 	while (++i < env->nb_philo)
 	{

@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:11:38 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 02:08:41 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 23:01:07 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	printer(int action, t_philo *philo)
 		printf("%ld %d died\n", get_current_time(philo->env_data),
 			philo->id);
 		philo->env_data->can_print->value = false;
-		set_val_mut(philo->env_data->state, stoped);
+		set_val_mut(philo->env_data->state, stopped);
 	}
 	else if (action == FORK)
 		printf("%ld %d has taken a fork\n", get_current_time(philo->env_data),

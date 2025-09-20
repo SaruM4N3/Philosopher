@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 16:13:02 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 23:01:07 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,11 @@
 # define THINK 4204
 # define DEAD 4205
 
-enum			e_philo_state
-{
-	start,
-	ready,
-	alive,
-	dead
-};
-
 enum			e_env_state
 {
 	starting,
 	running,
-	stoping,
-	stoped
+	stopped
 };
 
 // STRUCTS
@@ -48,22 +39,19 @@ typedef struct s_mut
 
 typedef struct s_fork
 {
-	int				id;
 	t_mut			*is_available;
 }					t_fork;
 
 typedef struct s_philo
 {
 	struct s_env	*env_data;
-	pthread_t		philo_thread;
 
 	int				id;
 	int				must_eat;
+	int				meals_count;
 	time_t			self_death_time;
 
-	// doesn't need to be a mutex
-	t_mut			*meals_count;
-	t_mut			*state;
+	t_mut			*is_ready;
 
 	t_fork			*right_fork;
 	t_fork			*left_fork;
