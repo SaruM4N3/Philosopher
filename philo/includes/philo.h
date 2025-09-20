@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 01:34:40 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 16:13:02 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,5 @@ void				print_action(t_philo *philo, int action);
 time_t				timestamp_in_ms(void);
 time_t				get_current_time(t_env *env_data);
 int					ft_wait(unsigned int milliseconds, t_philo *philo);
-bool				check_user_input(int ac, char **av);
 
 #endif
