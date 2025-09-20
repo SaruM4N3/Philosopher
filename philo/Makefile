@@ -6,13 +6,13 @@
 #    By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/09/19 23:59:16 by zsonie           ###   ########lyon.fr    #
+#    Updated: 2025/09/20 16:18:01 by zsonie           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -g3
 RM = rm -f
 
 INC = -I includes
