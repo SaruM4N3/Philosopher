@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 22:51:43 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 23:36:03 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_env	init_env(int ac, char **av)
 	env.state = init_mut(starting);
 	env.can_print = init_mut(true);
 	env.finished = init_mut(0);
+	if (!env.state || !env.can_print || !env.finished)
+		env.nb_philo = -1;
 	env.philosophers = NULL;
 	env.forks = NULL;
 	return (env);
@@ -40,7 +42,7 @@ bool	init_philosophers(t_env *env)
 {
 	int	i;
 
-	env->philosophers = malloc(sizeof(t_philo) * env->nb_philo);
+	env->philosophers = calloc(env->nb_philo, sizeof(t_philo));
 	if (!env->philosophers)
 		return (false);
 	i = 0;
@@ -51,6 +53,8 @@ bool	init_philosophers(t_env *env)
 		env->philosophers[i].must_eat = env->nb_must_eat;
 		env->philosophers[i].self_death_time = env->time_to_die;
 		env->philosophers[i].is_ready = init_mut(false);
+		if (!env->philosophers[i].is_ready)
+			return (false);
 		env->philosophers[i].meals_count = 0;
 		i++;
 	}
@@ -61,12 +65,16 @@ bool	init_forks(t_env *env)
 {
 	int	i;
 
-	env->forks = malloc(sizeof(t_fork) * env->nb_philo);
+	env->forks = calloc(env->nb_philo, sizeof(t_fork));
 	if (!env->forks)
 		return (false);
 	i = -1;
 	while (++i < env->nb_philo)
+	{
 		env->forks[i].is_available = init_mut(true);
+		if (!env->forks[i].is_available)
+			return (false);
+	}
 	i = -1;
 	while (++i < env->nb_philo)
 	{

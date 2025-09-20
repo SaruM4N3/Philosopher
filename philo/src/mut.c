@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 23:57:50 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 22:57:41 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 23:47:54 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,13 @@ int	get_val_mut(t_mut *mut)
 	val = mut->value;
 	pthread_mutex_unlock(&mut->mutex);
 	return (val);
+}
+
+void	destroy_mut(t_mut *mut)
+{
+	if (mut)
+	{
+		pthread_mutex_destroy(&mut->mutex);
+		free(mut);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 23:01:07 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 23:52:18 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void				*monitor_checker(void *philo_ptr);
 t_mut				*init_mut(int value);
 void				set_val_mut(t_mut *mut, int new_val);
 int					get_val_mut(t_mut *mut);
+void				destroy_mut(t_mut *mut);
 
 // philo.c
 void				*philo_routine(void *philo_ptr);

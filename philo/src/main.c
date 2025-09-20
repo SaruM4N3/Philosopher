@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 22:32:53 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 23:54:02 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,18 @@ void	destroy_and_free(t_env *env)
 	i = 0;
 	while (i < env->nb_philo)
 	{
-		pthread_mutex_destroy(&env->forks[i].is_available->mutex);
-		pthread_mutex_destroy(&env->philosophers[i].is_ready->mutex);
-		free(env->philosophers[i].is_ready);
-		free(env->forks[i].is_available);
+		if (env->forks)
+			destroy_mut(env->forks[i].is_available);
+		if (env->philosophers)
+			destroy_mut(env->philosophers[i].is_ready);
 		i++;
 	}
-	pthread_mutex_destroy(&env->state->mutex);
-	pthread_mutex_destroy(&env->finished->mutex);
-	pthread_mutex_destroy(&env->can_print->mutex);
+	destroy_mut(env->state);
+	destroy_mut(env->finished);
+	destroy_mut(env->can_print);
 	free(env->forks);
 	free(env->philosophers);
 	free(env->threads);
-	free(env->state);
-	free(env->can_print);
-	free(env->finished);
 }
 
 static bool	check_args(int ac, char **av)
@@ -68,6 +65,11 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	env = init_env(ac, av);
+	if (env.nb_philo == -1)
+	{
+		destroy_and_free(&env);
+		return (1);
+	}
 	if (!init_all(&env))
 	{
 		destroy_and_free(&env);
