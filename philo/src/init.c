@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/21 00:10:20 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 00:44:16 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,40 +87,45 @@ bool	init_forks(t_env *env)
 	return (true);
 }
 
+int	secure_thread(t_env *env)
+{
+	int		i;
+	bool	ret;
+
+	ret = true;
+	i = 0;
+	while (i < env->nb_philo)
+	{
+		if (pthread_create(&env->threads[i], NULL, &philo_routine,
+				&env->philosophers[i]) != 0)
+		{
+			set_val_mut(env->state, stopped);
+			print_custom_error(ERR_PTHREAD_CREATE);
+			ret = false;
+			break ;
+		}
+		i++;
+	}
+	while (i > 0)
+		pthread_join(env->threads[--i], NULL);
+	return (ret);
+}
+
 bool	init_threads(t_env *env)
 {
-	int			i;
+	bool ret;
 	pthread_t	monitor_thread;
 
 	env->threads = malloc(sizeof(pthread_t) * env->nb_philo);
 	if (!env->threads)
 		return (false);
 	if (pthread_create(&monitor_thread, NULL, &monitor_routine, env) != 0)
-		return (error_exit(ERR_PTHREAD_CREATE, env));
+	{
+		print_custom_error(ERR_PTHREAD_CREATE);
+		return (false);
+	}
 	env->start_time = timestamp_in_ms();
-	i = -1;
-	while (++i < env->nb_philo)
-	{
-		if (pthread_create(&env->threads[i], NULL, &philo_routine,
-				&env->philosophers[i]) != 0)
-			return (error_exit(ERR_PTHREAD_CREATE, env));
-	}
-	i = -1;
-	if (pthread_join(monitor_thread, NULL) != 0)
-		return (error_exit(ERR_PTHREAD_JOIN, env));
-	while (++i < env->nb_philo)
-	{
-		if (pthread_join(env->threads[i], NULL) != 0)
-			return (error_exit(ERR_PTHREAD_JOIN, env));
-	}
-	return (true);
-}
-
-bool	init_all(t_env *env)
-{
-	if (!init_philosophers(env))
-		return (false);
-	if (!init_forks(env))
-		return (false);
-	return (true);
+	ret = secure_thread(env);
+	pthread_join(monitor_thread, NULL);
+	return (ret);
 }

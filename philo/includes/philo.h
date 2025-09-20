@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:34:06 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 23:59:29 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 01:03:20 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ typedef struct s_env
 }					t_env;
 
 // FUNCTIONS
-
 // action.c
 void				*philo_eat(t_philo *philo);
 void				*philo_sleep(t_philo *philo);

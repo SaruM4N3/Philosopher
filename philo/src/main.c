@@ -6,13 +6,22 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 23:54:02 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 00:48:47 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "error.h"
 #include "philo.h"
 #include <stdlib.h>
+
+bool	init_all(t_env *env)
+{
+	if (!init_philosophers(env))
+		return (false);
+	if (!init_forks(env))
+		return (false);
+	return (true);
+}
 
 void	destroy_and_free(t_env *env)
 {
@@ -65,17 +74,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	env = init_env(ac, av);
-	if (env.nb_philo == -1)
-	{
-		destroy_and_free(&env);
-		return (1);
-	}
-	if (!init_all(&env))
-	{
-		destroy_and_free(&env);
-		return (1);
-	}
-	if (!init_threads(&env))
+	if (env.nb_philo == -1 || !init_all(&env) || !init_threads(&env))
 	{
 		destroy_and_free(&env);
 		return (1);

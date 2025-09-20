@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 18:07:30 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 22:31:49 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 00:51:49 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	*philo_eat(t_philo *philo)
 	philo->self_death_time = get_current_time(philo->env_data)
 		+ philo->env_data->time_to_die;
 	print_action(philo, EAT);
+	ft_wait(philo->env_data->time_to_eat, philo);
 	if (philo->must_eat > 0)
 	{
 		philo->meals_count++;
@@ -41,7 +42,6 @@ void	*philo_eat(t_philo *philo)
 			philo->must_eat = -1;
 		}
 	}
-	ft_wait(philo->env_data->time_to_eat, philo);
 	release_forks(philo);
 	return (NULL);
 }

@@ -6,17 +6,16 @@
 #    By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/09/20 16:18:01 by zsonie           ###   ########lyon.fr    #
+#    Updated: 2025/09/21 01:03:49 by zsonie           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -MMD -MP -g3
+CFLAGS = -Wall -Wextra -Werror -MMD -MP
 RM = rm -f
 
 INC = -I includes
-SRCDIR = src
 OBJDIR = obj
 
 SRCS = src/action.c\
@@ -38,12 +37,14 @@ $(NAME): $(OBJS)
 	@printf "$(GREEN)Making executable$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC) $(OBJS) $(LIB) -o $(NAME) 
 
-$(OBJDIR)/%.o: %.c includes/philo.h includes/error.h | $(OBJDIR)
+$(OBJDIR)/%.o: %.c | $(OBJDIR)
 	@printf "$(YELLOW)Converting $(GREEN)$< $(YELLOW)to $(GREEN)$@$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)/src
+
+-include $($(OBJS):.o=.d)
 
 clean:
 	@printf "$(RED)Cleaning $(GREEN)$(OBJDIR) $(RED)dir$(RESET)\n"

@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:21:57 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/21 00:00:47 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 00:59:13 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 	total = nmemb * size;
 	if (size != 0 && total / size != nmemb)
-		return (malloc(0));
+		return (NULL);
 	res = malloc(total);
 	if (!res)
 		return (NULL);
