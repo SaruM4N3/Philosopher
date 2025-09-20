@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 15:58:15 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 16:05:20 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	destroy_and_free(t_env *env)
 		pthread_mutex_destroy(&env->forks[i].is_available->mutex);
 		pthread_mutex_destroy(&env->philosophers[i].state->mutex);
 		pthread_mutex_destroy(&env->philosophers[i].meals_count->mutex);
+		free(env->philosophers[i].state);
+		free(env->philosophers[i].meals_count);
+		free(env->forks[i].is_available);
 		i++;
 	}
 	pthread_mutex_destroy(&env->state->mutex);
@@ -32,6 +35,9 @@ void	destroy_and_free(t_env *env)
 	free(env->forks);
 	free(env->philosophers);
 	free(env->threads);
+	free(env->state);
+	free(env->can_print);
+	free(env->finished);
 }
 
 static bool	check_args(int ac, char **av)
