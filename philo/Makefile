@@ -6,7 +6,7 @@
 #    By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 13:19:44 by zsonie            #+#    #+#              #
-#    Updated: 2025/09/14 02:53:09 by zsonie           ###   ########lyon.fr    #
+#    Updated: 2025/09/19 23:59:16 by zsonie           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS = src/action.c\
 		src/main.c\
 		src/philo.c\
 		src/monitor.c\
+		src/mut.c\
 		src/utils.c\
 		src/utils2.c\
 

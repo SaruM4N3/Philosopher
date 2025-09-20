@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/14 22:50:12 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 01:39:52 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,44 +20,39 @@ void	destroy_and_free(t_env *env)
 	i = 0;
 	while (i < env->nb_philo)
 	{
-		pthread_mutex_destroy(&env->forks[i].mutex);
-		pthread_mutex_destroy(&env->philosophers[i].mutex);
-		pthread_mutex_destroy(&env->philosophers[i].philo_eating_mutex);
-		pthread_mutex_destroy(&env->philosophers[i].philo_state_mutex);
+		pthread_mutex_destroy(&env->forks[i].is_available->mutex);
+		pthread_mutex_destroy(&env->philosophers[i].state->mutex);
+		pthread_mutex_destroy(&env->philosophers[i].eating->mutex);
+		pthread_mutex_destroy(&env->philosophers[i].meals_count->mutex);
 		i++;
 	}
-	pthread_mutex_destroy(&env->state_mutex);
-	pthread_mutex_destroy(&env->finished_mutex);
-	pthread_mutex_destroy(&env->print_mutex);
+	pthread_mutex_destroy(&env->state->mutex);
+	pthread_mutex_destroy(&env->finished->mutex);
+	pthread_mutex_destroy(&env->can_print->mutex);
 	free(env->forks);
 	free(env->philosophers);
 	free(env->threads);
 }
 
-static int	check_val(char **av)
-{
-	if (ft_atoi(av[1]) <= 0 || ft_atoi(av[1]) > 200)
-		return (0);
-	if (ft_atoi(av[2]) <= 0)
-		return (0);
-	if (ft_atoi(av[3]) <= 0)
-		return (0);
-	if (ft_atoi(av[4]) <= 0)
-		return (0);
-	if (av[5])
-	{
-		if (ft_atoi(av[5]) < 0)
-			return (0);
-	}
-	return (1);
-}
-
-static bool	parse_args(int ac)
+static bool	check_args(int ac, char **av)
 {
 	if (ac < 5 || ac > 6)
 	{
 		print_custom_error(ERR_ARG);
 		return (false);
+	}
+	if (ft_atoi(av[1]) <= 0 || ft_atoi(av[1]) > 200)
+		return (false);
+	if (ft_atoi(av[2]) <= 0)
+		return (false);
+	if (ft_atoi(av[3]) <= 0)
+		return (false);
+	if (ft_atoi(av[4]) <= 0)
+		return (false);
+	if (ac == 6 && av[5])
+	{
+		if (ft_atoi(av[5]) < 0)
+			return (false);
 	}
 	return (true);
 }
@@ -66,14 +61,13 @@ int	main(int ac, char **av)
 {
 	t_env	env;
 
-	if (!check_val(av))
+	if (!check_args(ac, av))
 	{
 		print_custom_error(ERR_ARG);
 		return (1);
 	}
-	if (!parse_args(ac))
-		return (1);
-	if (!init_all(av, ac, &env))
+	env = init_env(ac, av);
+	if (!init_all(&env))
 	{
 		destroy_and_free(&env);
 		return (1);

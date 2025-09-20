@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:11:38 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/15 02:01:57 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 02:08:41 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,49 +58,42 @@ int	ft_atoi(const char *str)
 	return (num * sign);
 }
 
-static bool	set_can_print(t_philo *philo, bool set)
+static void	printer(int action, t_philo *philo)
 {
-	pthread_mutex_lock(&philo->env_data->print_mutex);
-	philo->env_data->can_print = set;
-	pthread_mutex_unlock(&philo->env_data->print_mutex);
-	return (set);
-}
-void print_action(t_philo *philo, int action)
-{
-    pthread_mutex_lock(&philo->env_data->death_printed_mutex);
-    if (philo->env_data->death_printed && action != DEAD)
-    {
-        pthread_mutex_unlock(&philo->env_data->death_printed_mutex);
-        return; // Already printed a death, skip any other prints
-    }
-    if (action == DEAD)
-        philo->env_data->death_printed = true; // Mark death printed
-    pthread_mutex_unlock(&philo->env_data->death_printed_mutex);
-
-    pthread_mutex_lock(&philo->env_data->state_mutex);
-    if (philo->env_data->state == stoping)
-    {
-        pthread_mutex_unlock(&philo->env_data->state_mutex);
-        return;
-    }
-    pthread_mutex_unlock(&philo->env_data->state_mutex);
-
-    if (!set_can_print(philo, false))
-    {
-        if (action == FORK)
-            printf("%ld %d has taken a fork\n", get_current_time(philo->env_data), philo->id);
-        else if (action == EAT)
-            printf("%ld %d is eating\n", get_current_time(philo->env_data), philo->id);
-        else if (action == SLEEP)
-            printf("%ld %d is sleeping\n", get_current_time(philo->env_data), philo->id);
-        else if (action == THINK)
-            printf("%ld %d is thinking\n", get_current_time(philo->env_data), philo->id);
-        else if (action == DEAD)
-            printf("%ld %d is dead\n", get_current_time(philo->env_data), philo->id);
-        else
-            printf("ERROR: UNKNOWN ACTION\n");
-
-        set_can_print(philo, true);
-    }
+	if (action == DEAD)
+	{
+		printf("%ld %d is dead\n", get_current_time(philo->env_data),
+			philo->id);
+		set_val_mut(philo->env_data->can_print, false);
+		set_val_mut(philo->env_data->state, stoped);
+	}
+	else if (action == FORK)
+		printf("%ld %d has taken a fork\n", get_current_time(philo->env_data),
+			philo->id);
+	else if (action == EAT)
+		printf("%ld %d is eating\n", get_current_time(philo->env_data),
+			philo->id);
+	else if (action == SLEEP)
+		printf("%ld %d is sleeping\n", get_current_time(philo->env_data),
+			philo->id);
+	else if (action == THINK)
+		printf("%ld %d is thinking\n", get_current_time(philo->env_data),
+			philo->id);
+	else
+		printf("ERROR: UNKNOWN ACTION\n");
 }
 
+void	print_action(t_philo *philo, int action)
+{
+	usleep(10);
+	if (get_val_mut(philo->env_data->state) > stoping)
+		return ;
+	if (get_val_mut(philo->env_data->can_print) == true)
+	{
+		set_val_mut(philo->env_data->can_print, false);
+		printer(action, philo);
+		set_val_mut(philo->env_data->can_print, true);
+	}
+	else
+		print_action(philo, action);
+}

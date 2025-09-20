@@ -6,12 +6,12 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:21:57 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/15 00:13:30 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 01:09:22 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
 #include "error.h"
+#include "philo.h"
 #include <sys/time.h>
 
 time_t	timestamp_in_ms(void)
@@ -34,20 +34,4 @@ int	ft_wait(unsigned int milliseconds)
 	while ((timestamp_in_ms() - start) < milliseconds)
 		usleep(100);
 	return (0);
-}
-
-bool	validate_input(t_env *env_data, int ac)
-{
-	if (env_data->nb_philo <= 0 || env_data->time_to_die <= 0
-		|| env_data->time_to_eat <= 0 || env_data->time_to_sleep <= 0)
-	{
-		print_custom_error(ERR_ARG);
-		return (false);
-	}
-	if (ac == 6 && env_data->nb_must_eat < 0)
-	{
-		print_custom_error(ERR_ARG);
-		return (false);
-	}
-	return (true);
 }
