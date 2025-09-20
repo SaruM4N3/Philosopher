@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <error.h>
-#include <philo.h>
+#include "philo.h"
+#include <stdlib.h>
 
 t_mut	*init_mut(int value)
 {
@@ -34,7 +34,7 @@ void	set_val_mut(t_mut *mut, int new_val)
 
 int	get_val_mut(t_mut *mut)
 {
-	int val;
+	int	val;
 
 	pthread_mutex_lock(&mut->mutex);
 	val = mut->value;

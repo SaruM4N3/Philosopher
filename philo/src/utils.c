@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "philo.h"
 #include <limits.h>
-#include <stddef.h>
-#include <unistd.h>
+#include <stdio.h>
 
 static void	ft_check_sign(const char *str, size_t *i, int *sign)
 {
@@ -40,11 +39,7 @@ int	ft_atoi(const char *str)
 	while (str[i] && !(str[i] < '0' || str[i] > '9'))
 	{
 		if (LONG_MAX / 10 < num)
-		{
-			if (sign > 0 || num > 2147483647 || num < 0)
-				return (-1);
-			return (0);
-		}
+			return (-1);
 		num *= 10;
 		if (LONG_MAX - (str[i] - 48) < num)
 		{
@@ -62,9 +57,9 @@ static void	printer(int action, t_philo *philo)
 {
 	if (action == DEAD)
 	{
-		printf("%ld %d is dead\n", get_current_time(philo->env_data),
+		printf("%ld %d died\n", get_current_time(philo->env_data),
 			philo->id);
-		set_val_mut(philo->env_data->can_print, false);
+		philo->env_data->can_print->value = false;
 		set_val_mut(philo->env_data->state, stoped);
 	}
 	else if (action == FORK)
@@ -85,15 +80,8 @@ static void	printer(int action, t_philo *philo)
 
 void	print_action(t_philo *philo, int action)
 {
-	usleep(10);
-	if (get_val_mut(philo->env_data->state) > stoping)
-		return ;
-	if (get_val_mut(philo->env_data->can_print) == true)
-	{
-		set_val_mut(philo->env_data->can_print, false);
+	pthread_mutex_lock(&philo->env_data->can_print->mutex);
+	if (philo->env_data->can_print->value == true)
 		printer(action, philo);
-		set_val_mut(philo->env_data->can_print, true);
-	}
-	else
-		print_action(philo, action);
+	pthread_mutex_unlock(&philo->env_data->can_print->mutex);
 }

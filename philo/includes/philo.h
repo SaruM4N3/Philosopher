@@ -13,18 +13,31 @@
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <pthread.h>
 # include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <sys/time.h>
-# include <unistd.h>
+# include <pthread.h>
 
 # define EAT 4201
 # define FORK 4202
 # define SLEEP 4203
 # define THINK 4204
 # define DEAD 4205
+
+enum			e_philo_state
+{
+	start,
+	ready,
+	alive,
+	dead
+};
+
+enum			e_env_state
+{
+	starting,
+	running,
+	stoping,
+	stoped
+};
 
 // STRUCTS
 typedef struct s_mut
@@ -47,17 +60,9 @@ typedef struct s_philo
 	int				id;
 	int				must_eat;
 	time_t			self_death_time;
-	
-	enum			philo_state
-	{
-		start,
-		ready,
-		alive,
-		dead
-	} philo_state;
-	
+
+	// doesn't need to be a mutex
 	t_mut			*meals_count;
-	t_mut			*eating;
 	t_mut			*state;
 
 	t_fork			*right_fork;
@@ -70,14 +75,6 @@ typedef struct s_env
 
 	int				nb_philo;
 	int				nb_must_eat;
-
-	enum			env_state
-	{
-		starting,
-		running,
-		stoping,
-		stoped
-	} env_state;
 
 	t_mut			*finished;
 	t_mut			*can_print;
@@ -129,7 +126,7 @@ void				print_action(t_philo *philo, int action);
 // utils2.c
 time_t				timestamp_in_ms(void);
 time_t				get_current_time(t_env *env_data);
-int					ft_wait(unsigned int milliseconds);
+int					ft_wait(unsigned int milliseconds, t_philo *philo);
 bool				check_user_input(int ac, char **av);
 
 #endif

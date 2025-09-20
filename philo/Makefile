@@ -12,7 +12,7 @@
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g3
 RM = rm -f
 
 INC = -I includes
@@ -34,11 +34,11 @@ OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS)
 	@printf "$(GREEN)Making executable$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC) $(OBJS) $(LIB) -o $(NAME) 
 
-$(OBJDIR)/%.o: %.c | $(OBJDIR) 
+$(OBJDIR)/%.o: %.c includes/philo.h includes/error.h | $(OBJDIR)
 	@printf "$(YELLOW)Converting $(GREEN)$< $(YELLOW)to $(GREEN)$@$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
@@ -46,17 +46,17 @@ $(OBJDIR):
 	@mkdir -p $(OBJDIR)/src
 
 clean:
-	@printf "$(RED)Cleaning $(GREEN)$(OBJDIR) $(RED)dir\n"
+	@printf "$(RED)Cleaning $(GREEN)$(OBJDIR) $(RED)dir$(RESET)\n"
 	@$(RM) $(OBJS)
 	@$(RM) -r $(OBJDIR)
 
 fclean: clean
-	@printf "$(RED)Full clean\n"
+	@printf "$(RED)Full clean$(RESET)\n"
 	@$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re debug
+.PHONY: all clean fclean re
 
 .DEFAULT_GOAL = all
 # COLORS

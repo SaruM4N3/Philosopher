@@ -12,6 +12,7 @@
 
 #include "error.h"
 #include "philo.h"
+#include <stdio.h>
 
 void	print_custom_error(int err)
 {

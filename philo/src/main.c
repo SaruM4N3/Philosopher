@@ -6,12 +6,13 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 01:39:52 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/20 15:58:15 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "error.h"
 #include "philo.h"
+#include <stdlib.h>
 
 void	destroy_and_free(t_env *env)
 {
@@ -22,7 +23,6 @@ void	destroy_and_free(t_env *env)
 	{
 		pthread_mutex_destroy(&env->forks[i].is_available->mutex);
 		pthread_mutex_destroy(&env->philosophers[i].state->mutex);
-		pthread_mutex_destroy(&env->philosophers[i].eating->mutex);
 		pthread_mutex_destroy(&env->philosophers[i].meals_count->mutex);
 		i++;
 	}
@@ -37,11 +37,8 @@ void	destroy_and_free(t_env *env)
 static bool	check_args(int ac, char **av)
 {
 	if (ac < 5 || ac > 6)
-	{
-		print_custom_error(ERR_ARG);
 		return (false);
-	}
-	if (ft_atoi(av[1]) <= 0 || ft_atoi(av[1]) > 200)
+	if (ft_atoi(av[1]) <= 0)
 		return (false);
 	if (ft_atoi(av[2]) <= 0)
 		return (false);

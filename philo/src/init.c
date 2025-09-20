@@ -12,6 +12,7 @@
 
 #include "error.h"
 #include "philo.h"
+#include <stdlib.h>
 
 t_env	init_env(int ac, char **av)
 {
@@ -50,7 +51,6 @@ bool	init_philosophers(t_env *env)
 		env->philosophers[i].must_eat = env->nb_must_eat;
 		env->philosophers[i].self_death_time = env->time_to_die;
 		env->philosophers[i].state = init_mut(start);
-		env->philosophers[i].eating = init_mut(false);
 		env->philosophers[i].meals_count = init_mut(0);
 		i++;
 	}

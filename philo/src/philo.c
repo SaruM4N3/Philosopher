@@ -12,6 +12,7 @@
 
 #include "error.h"
 #include "philo.h"
+#include <unistd.h>
 
 void	*philo_death_check(void *philo_ptr)
 {
@@ -20,9 +21,8 @@ void	*philo_death_check(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	if (get_current_time(philo->env_data) >= philo->self_death_time)
 	{
-		set_val_mut(philo->state, dead);		
+		set_val_mut(philo->state, dead);
 		print_action(philo, DEAD);
-		set_val_mut(philo->env_data->state,stoping);
 		return (ERR_PTR);
 	}
 	return (NULL);
@@ -30,10 +30,10 @@ void	*philo_death_check(void *philo_ptr)
 
 static void	philo_wait_start(t_philo *philo)
 {
-	set_val_mut(philo->state,ready);
+	set_val_mut(philo->state, ready);
 	while (get_val_mut(philo->env_data->state) == starting)
 		usleep(100);
-	set_val_mut(philo->state,alive);
+	set_val_mut(philo->state, alive);
 }
 
 static void	*even_routine(void *philo_ptr)
@@ -69,6 +69,7 @@ static void	*odd_routine(void *philo_ptr)
 void	*philo_routine(void *philo_ptr)
 {
 	t_philo	*philo;
+
 	philo = (t_philo *)philo_ptr;
 	philo_wait_start(philo);
 	while (get_val_mut(philo->env_data->state) == running)

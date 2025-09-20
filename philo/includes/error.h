@@ -13,7 +13,6 @@
 #ifndef ERROR_H
 # define ERROR_H
 
-# include <stdbool.h>
 # include "philo.h"
 
 //Colors
@@ -41,6 +40,6 @@ time_to_sleep \
 //Functions
 void	print_custom_error(int err);
 int		error_exit(int err, t_env *env);
-void    destroy_and_free(t_env *env);
+void	destroy_and_free(t_env *env);
 
 #endif

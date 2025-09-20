@@ -12,31 +12,38 @@
 
 #include "error.h"
 #include "philo.h"
+#include <unistd.h>
 
-static bool	check_fork(t_philo *philo, t_fork *fork, bool fork_grabed)
+static bool	check_fork(t_philo *philo, t_fork *fork)
 {
 	if (get_val_mut(philo->env_data->state) != running)
-		return (ERR_PTR);
-	if (get_val_mut(fork->is_available) == true)
+		return (true);
+	pthread_mutex_lock(&fork->is_available->mutex);
+	if (fork->is_available->value == true)
 	{
-		set_val_mut(fork->is_available, false);
-		print_action(philo, FORK);
-		fork_grabed = true;
+		fork->is_available->value = false;
+		pthread_mutex_unlock(&fork->is_available->mutex);
+		return (true);
 	}
-	return (fork_grabed);
+	pthread_mutex_unlock(&fork->is_available->mutex);
+	return (false);
 }
 
 void	*grab_forks(t_philo *philo)
 {
-	bool	r_fork_grabed;
-	bool	l_fork_grabed;
+	bool	r_fork_grabbed;
+	bool	l_fork_grabbed;
 
-	r_fork_grabed = false;
-	l_fork_grabed = false;
-	while (!r_fork_grabed || !l_fork_grabed)
+	r_fork_grabbed = false;
+	l_fork_grabbed = false;
+	while (!r_fork_grabbed || !l_fork_grabbed)
 	{
-		r_fork_grabed = check_fork(philo, philo->right_fork, r_fork_grabed);
-		l_fork_grabed = check_fork(philo, philo->left_fork, l_fork_grabed);
+		if (philo_death_check(philo) == ERR_PTR)
+			break ;
+		if (!r_fork_grabbed)
+			r_fork_grabbed = check_fork(philo, philo->right_fork);
+		if (!l_fork_grabbed)
+			l_fork_grabbed = check_fork(philo, philo->left_fork);
 		usleep(100);
 	}
 	return (NULL);
