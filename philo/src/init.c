@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:11 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/21 00:44:16 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/22 04:02:42 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	secure_thread(t_env *env)
 
 bool	init_threads(t_env *env)
 {
-	bool ret;
+	bool		ret;
 	pthread_t	monitor_thread;
 
 	env->threads = malloc(sizeof(pthread_t) * env->nb_philo);

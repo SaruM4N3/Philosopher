@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 18:07:30 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/21 00:51:49 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/22 04:06:33 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	*philo_sleep(t_philo *philo)
 {
-	if (philo_death_check(philo) == ERR_PTR)
-		return (ERR_PTR);
+	if (philo_death_check(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
 	print_action(philo, SLEEP);
 	ft_wait(philo->env_data->time_to_sleep, philo);
 	return (NULL);
@@ -24,8 +24,8 @@ void	*philo_sleep(t_philo *philo)
 
 void	*philo_eat(t_philo *philo)
 {
-	if (philo_death_check(philo) == ERR_PTR)
-		return (ERR_PTR);
+	if (philo_death_check(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
 	grab_forks(philo);
 	philo->self_death_time = get_current_time(philo->env_data)
 		+ philo->env_data->time_to_die;

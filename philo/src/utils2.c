@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:21:57 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/21 00:59:13 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/22 04:06:32 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_wait(unsigned int milliseconds, t_philo *philo)
 	start = timestamp_in_ms();
 	while ((timestamp_in_ms() - start) < milliseconds
 		&& get_val_mut(philo->env_data->state) == running
-		&& philo_death_check(philo) != ERR_PTR)
+		&& philo_death_check(philo) != (void *)ERR_PTR)
 		usleep(100);
 	return (0);
 }

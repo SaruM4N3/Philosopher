@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 02:49:15 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 00:36:53 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/22 04:06:32 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*grab_forks(t_philo *philo)
 	l_fork_grabbed = false;
 	while (!r_fork_grabbed || !l_fork_grabbed)
 	{
-		if (philo_death_check(philo) == ERR_PTR)
+		if (philo_death_check(philo) == (void *)ERR_PTR)
 			break ;
 		if (!r_fork_grabbed)
 			r_fork_grabbed = check_fork(philo, philo->right_fork);

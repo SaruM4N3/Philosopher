@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:06:52 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/21 00:09:34 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/22 04:00:56 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_custom_error(int err)
 		printf(ERR_MESSAGE "%sUnknown error\n%s", RED, RESET);
 }
 
-int	error_exit(int err, t_env *env)
+int	error_handler(int err, t_env *env)
 {
 	print_custom_error(err);
 	if (env)

@@ -6,7 +6,7 @@
 /*   By: zsonie <zsonie@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 21:08:28 by zsonie            #+#    #+#             */
-/*   Updated: 2025/09/20 22:41:32 by zsonie           ###   ########lyon.fr   */
+/*   Updated: 2025/09/22 04:06:32 by zsonie           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*philo_death_check(void *philo_ptr)
 	if (get_current_time(philo->env_data) >= philo->self_death_time)
 	{
 		print_action(philo, DEAD);
-		return (ERR_PTR);
+		return ((void *)ERR_PTR);
 	}
 	return (NULL);
 }
@@ -40,12 +40,12 @@ static void	*even_routine(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
-	if (philo_eat(philo) == ERR_PTR)
-		return (ERR_PTR);
-	if (philo_sleep(philo) == ERR_PTR)
-		return (ERR_PTR);
-	if (philo_death_check(philo) == ERR_PTR)
-		return (ERR_PTR);
+	if (philo_eat(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
+	if (philo_sleep(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
+	if (philo_death_check(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
 	print_action(philo, THINK);
 	return (NULL);
 }
@@ -55,13 +55,13 @@ static void	*odd_routine(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
-	if (philo_sleep(philo) == ERR_PTR)
-		return (ERR_PTR);
-	if (philo_death_check(philo) == ERR_PTR)
-		return (ERR_PTR);
+	if (philo_sleep(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
+	if (philo_death_check(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
 	print_action(philo, THINK);
-	if (philo_eat(philo) == ERR_PTR)
-		return (ERR_PTR);
+	if (philo_eat(philo) == (void *)ERR_PTR)
+		return ((void *)ERR_PTR);
 	return (NULL);
 }
 
@@ -77,13 +77,13 @@ void	*philo_routine(void *philo_ptr)
 	{
 		if (philo->id % 2 == 0)
 		{
-			if (even_routine(philo) == ERR_PTR)
-				return (ERR_PTR);
+			if (even_routine(philo) == (void *)ERR_PTR)
+				return ((void *)ERR_PTR);
 		}
 		else
 		{
-			if (odd_routine(philo) == ERR_PTR)
-				return (ERR_PTR);
+			if (odd_routine(philo) == (void *)ERR_PTR)
+				return ((void *)ERR_PTR);
 		}
 	}
 	return (NULL);
