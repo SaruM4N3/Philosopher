@@ -21,6 +21,7 @@ static bool	check_fork(t_philo *philo, t_fork *fork)
 	pthread_mutex_lock(&fork->is_available->mutex);
 	if (fork->is_available->value == true)
 	{
+		print_action(philo, FORK);
 		fork->is_available->value = false;
 		pthread_mutex_unlock(&fork->is_available->mutex);
 		return (true);
@@ -44,7 +45,7 @@ void	*grab_forks(t_philo *philo)
 			r_fork_grabbed = check_fork(philo, philo->right_fork);
 		if (!l_fork_grabbed)
 			l_fork_grabbed = check_fork(philo, philo->left_fork);
-		usleep(100);
+		usleep(1000);
 	}
 	return (NULL);
 }

@@ -26,8 +26,8 @@ SRCS = src/action.c\
 		src/philo.c\
 		src/monitor.c\
 		src/mut.c\
-		src/utils.c\
-		src/utils2.c\
+		src/time_utils.c\
+		src/utils.c
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
@@ -44,7 +44,9 @@ $(OBJDIR)/%.o: %.c | $(OBJDIR)
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)/src
 
--include $($(OBJS):.o=.d)
+$(OBJS): Makefile
+
+-include $(OBJS:.o=.d)
 
 clean:
 	@printf "$(RED)Cleaning $(GREEN)$(OBJDIR) $(RED)dir$(RESET)\n"

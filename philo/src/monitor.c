@@ -27,7 +27,7 @@ void	*monitor_routine(void *env_ptr)
 			set_val_mut(env->can_print, false);
 			set_val_mut(env->state, stopped);
 		}
-		usleep(100);
+		usleep(1000);
 	}
 	return (NULL);
 }

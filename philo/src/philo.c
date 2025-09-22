@@ -31,7 +31,7 @@ static void	philo_wait_start(t_philo *philo)
 {
 	set_val_mut(philo->is_ready, false);
 	while (get_val_mut(philo->env_data->state) == starting)
-		usleep(100);
+		usleep(1000);
 	set_val_mut(philo->is_ready, true);
 }
 
