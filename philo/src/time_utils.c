@@ -37,7 +37,7 @@ int	ft_wait(unsigned int milliseconds, t_philo *philo)
 	while ((timestamp_in_ms() - start) < milliseconds
 		&& get_val_mut(philo->env_data->state) == running
 		&& philo_death_check(philo) != (void *)ERR_PTR)
-		usleep(1000);
+		usleep(100);
 	return (0);
 }
 

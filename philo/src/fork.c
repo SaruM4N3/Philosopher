@@ -45,7 +45,7 @@ void	*grab_forks(t_philo *philo)
 			r_fork_grabbed = check_fork(philo, philo->right_fork);
 		if (!l_fork_grabbed)
 			l_fork_grabbed = check_fork(philo, philo->left_fork);
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }
